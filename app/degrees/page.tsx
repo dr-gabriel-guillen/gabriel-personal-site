@@ -35,10 +35,10 @@ const STATUS_COLORS = {
   in_progress: "bg-purple-900/40 text-purple-300 border-purple-700",
 };
 
-const COUNTRY_FLAGS: Record<string, string> = {
-  Argentina: "🇦🇷",
-  USA:       "🇺🇸",
-  Spain:     "🇪🇸",
+const COUNTRY_FLAG_URLS: Record<string, string> = {
+  Argentina: "https://flagcdn.com/w20/ar.png",
+  USA:       "https://flagcdn.com/w20/us.png",
+  Spain:     "https://flagcdn.com/w20/es.png",
 };
 
 function UniversityLogo({ domain, name }: { domain?: string; name: string }) {
@@ -72,6 +72,8 @@ const fullyDoc     = DEGREES.filter((d) => d.docs.length >= 5).length;
 const inProgress   = DEGREES.filter((d) => d.status === "in_progress").length;
 const toCollect    = DEGREES.filter((d) => d.status === "to_collect").length;
 const processing   = DEGREES.filter((d) => d.status === "processing").length;
+// 22 = conferred + processing + to_collect (excludes 3 currently pursuing)
+const earnedCount  = DEGREES.filter((d) => d.status !== "in_progress").length;
 
 export default function DegreesPage() {
   const [filterLevel,   setFilterLevel]   = useState<DegreeLevel | "all">("all");
@@ -94,12 +96,13 @@ export default function DegreesPage() {
             ★ Guinness World Record Candidate
           </div>
           <h1 className="mt-6 font-display text-6xl font-bold text-cream lg:text-7xl">
-            25 University Degrees
+            {earnedCount} University Degrees
           </h1>
           <p className="mt-5 max-w-3xl text-lg leading-9 text-cream-dim">
             Earned across Argentina, the United States, and Spain — spanning five academic levels
             from pre-graduate through doctorate. Completed degrees are authenticated through a
             five-step international pipeline for Guinness World Records submission.
+            Additionally pursuing {inProgress} more degrees currently in progress.
           </p>
           <div className="mt-8 flex flex-wrap gap-8">
             <div><p className="font-display text-4xl font-bold text-gold">{conferred}</p><p className="mt-1 text-xs text-cream-dim">Conferred</p></div>
@@ -240,8 +243,8 @@ export default function DegreesPage() {
                               <p className="mt-0.5 text-sm italic text-cream-dim">{degree.titleEs}</p>
 
                               <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-cream-dim">
-                                <span className="flex items-center gap-1">
-                                  <span>{COUNTRY_FLAGS[degree.country]}</span>
+                                <span className="flex items-center gap-1.5">
+                                  <img src={COUNTRY_FLAG_URLS[degree.country]} alt={degree.country} width={20} height={14} className="inline-block rounded-sm" />
                                   <span>{degree.university}</span>
                                 </span>
                                 <span className="font-bold text-gold">

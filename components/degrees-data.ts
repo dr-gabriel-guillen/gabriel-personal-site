@@ -36,19 +36,7 @@ export interface Degree {
 }
 
 export const DEGREES: Degree[] = [
-  // PRE-GRAD / TERCIARIO
-  {
-    id: 1,
-    level: "pre_grad",
-    titleEs: "Operador en Psicología Social",
-    titleEn: "Social Psychology Practitioner",
-    university: "Escuela Superior de Psicología Social",
-    country: "Argentina",
-    year: 2014,
-    status: "in_hand",
-    docs: ["original_spanish", "apostille", "english_translation", "translator_cert", "second_apostille"],
-    file: "01_Social_Psycology_Practitioner.pdf",
-  },
+  // PRE-GRAD / TERCIARIO — ordered by importance
   {
     id: 2,
     level: "pre_grad",
@@ -75,8 +63,37 @@ export const DEGREES: Degree[] = [
     docs: ["original_spanish", "apostille", "english_translation", "translator_cert", "second_apostille"],
     file: "13_broker_degree.pdf",
   },
+  {
+    id: 1,
+    level: "pre_grad",
+    titleEs: "Operador en Psicología Social",
+    titleEn: "Social Psychology Practitioner",
+    university: "Escuela Superior de Psicología Social",
+    country: "Argentina",
+    year: 2014,
+    status: "in_hand",
+    docs: ["original_spanish", "apostille", "english_translation", "translator_cert", "second_apostille"],
+    file: "01_Social_Psycology_Practitioner.pdf",
+  },
 
-  // GRADO / BACHELOR
+  // GRADO / BACHELOR — ordered by importance
+  {
+    id: 8,
+    level: "grad",
+    titleEs: "Abogado",
+    titleEn: "Juris Doctor (J.D.)",
+    university: "Universidad Nacional del Chaco Austral",
+    universityDomain: "uncaus.edu.ar",
+    country: "Argentina",
+    year: 2021,
+    status: "in_hand",
+    docs: ["original_spanish", "apostille", "english_translation", "translator_cert", "second_apostille"],
+    highlights: [
+      "Admitted to the Buenos Aires State Bar (2022)",
+      "Admitted to the California State Bar (2025) — License #361094",
+    ],
+    file: "09_Attorney.pdf",
+  },
   {
     id: 4,
     level: "grad",
@@ -122,7 +139,7 @@ export const DEGREES: Degree[] = [
     id: 7,
     level: "grad",
     titleEs: "Profesor de Enseñanza de Nivel Medio y Superior en Matemática",
-    titleEn: "High School & University Mathematics Teacher",
+    titleEn: "University Mathematics Professor",
     university: "Universidad Nacional de Río Negro",
     universityDomain: "unrn.edu.ar",
     country: "Argentina",
@@ -132,27 +149,10 @@ export const DEGREES: Degree[] = [
     file: "06_Teacher_Degree.pdf",
   },
   {
-    id: 8,
-    level: "grad",
-    titleEs: "Abogado",
-    titleEn: "Juris Doctor (J.D.) — Argentine Law",
-    university: "Universidad Nacional del Chaco Austral",
-    universityDomain: "uncaus.edu.ar",
-    country: "Argentina",
-    year: 2021,
-    status: "in_hand",
-    docs: ["original_spanish", "apostille", "english_translation", "translator_cert", "second_apostille"],
-    highlights: [
-      "Admitted to the Buenos Aires State Bar (2022)",
-      "Admitted to the California State Bar (2025) — License #361094",
-    ],
-    file: "09_Attorney.pdf",
-  },
-  {
     id: 9,
     level: "grad",
     titleEs: "Escribano",
-    titleEn: "Notary Public (Argentine Civil Law)",
+    titleEn: "Notary Public",
     university: "Universidad Empresarial Siglo XXI",
     universityDomain: "siglo21.edu.ar",
     country: "Argentina",
@@ -183,7 +183,7 @@ export const DEGREES: Degree[] = [
     universityDomain: "siglo21.edu.ar",
     country: "Argentina",
     year: 2025,
-    status: "to_collect",   // A retirar
+    status: "to_collect",
     docs: ["original_spanish"],
   },
   {
@@ -195,7 +195,7 @@ export const DEGREES: Degree[] = [
     universityDomain: "siglo21.edu.ar",
     country: "Argentina",
     year: 2026,
-    status: "processing",   // En trámite — studies done, diploma being issued
+    status: "processing",
     docs: [],
   },
   {
@@ -208,24 +208,11 @@ export const DEGREES: Degree[] = [
     country: "USA",
     year: null,
     estimatedYear: 2028,
-    status: "in_progress",   // Currently pursuing
+    status: "in_progress",
     docs: [],
   },
 
-  // ESPECIALIZACIÓN
-  {
-    id: 14,
-    level: "specialist",
-    titleEs: "Especialista en Higiene y Seguridad en el Trabajo",
-    titleEn: "Specialist in Occupational Health & Safety",
-    university: "Universidad de Morón",
-    universityDomain: "unimoron.edu.ar",
-    country: "Argentina",
-    year: 2016,
-    status: "in_hand",
-    docs: ["original_spanish", "apostille", "english_translation", "translator_cert", "second_apostille"],
-    file: "05_Specialist_Safety.pdf",
-  },
+  // ESPECIALIZACIÓN — ordered by importance
   {
     id: 15,
     level: "specialist",
@@ -238,6 +225,19 @@ export const DEGREES: Degree[] = [
     status: "in_hand",
     docs: ["original_spanish", "apostille", "english_translation", "translator_cert", "second_apostille"],
     file: "10_petro_chemical.pdf",
+  },
+  {
+    id: 14,
+    level: "specialist",
+    titleEs: "Especialista en Higiene y Seguridad en el Trabajo",
+    titleEn: "Specialist in Occupational Health & Safety",
+    university: "Universidad de Morón",
+    universityDomain: "unimoron.edu.ar",
+    country: "Argentina",
+    year: 2016,
+    status: "in_hand",
+    docs: ["original_spanish", "apostille", "english_translation", "translator_cert", "second_apostille"],
+    file: "05_Specialist_Safety.pdf",
   },
   {
     id: 16,
@@ -261,11 +261,47 @@ export const DEGREES: Degree[] = [
     universityDomain: "uba.ar",
     country: "Argentina",
     year: 2026,
-    status: "to_collect",   // A retirar
+    status: "to_collect",
     docs: ["original_spanish"],
   },
 
-  // MASTER
+  // MASTER — ordered by importance: Harvard first, then Lehigh, then others
+  {
+    id: 20,
+    level: "master",
+    titleEs: "Master en Ciencia de Datos",
+    titleEn: "Master in Data Science",
+    university: "Harvard University",
+    universityDomain: "harvard.edu",
+    country: "USA",
+    year: 2021,
+    status: "in_hand",
+    docs: ["original_english"],
+    highlights: [
+      "CGPA: 3.77",
+      "Capstone: Lyme Disease Incidence Rate Modeling & Risk Assessment Mapping",
+      "Research: COVID-19 spread prediction using Google Mobility data",
+      "Research: Benford's Law applied to Twitter data",
+    ],
+  },
+  {
+    id: 19,
+    level: "master",
+    titleEs: "Master of Science in Financial Engineering",
+    titleEn: "Master of Science in Financial Engineering",
+    university: "Lehigh University",
+    universityDomain: "lehigh.edu",
+    country: "USA",
+    year: 2020,
+    status: "in_hand",
+    docs: ["original_english"],
+    highlights: [
+      "Fulbright Scholarship Recipient",
+      "2020 Bloomberg Competition Participant",
+      "2019 IAFC Competition Participant",
+      "Graduate Senate Representative",
+    ],
+  },
   {
     id: 18,
     level: "master",
@@ -280,42 +316,6 @@ export const DEGREES: Degree[] = [
     file: "07_master_IT.pdf",
   },
   {
-    id: 19,
-    level: "master",
-    titleEs: "Master of Science in Financial Engineering",
-    titleEn: "Master of Science in Financial Engineering",
-    university: "Lehigh University",
-    universityDomain: "lehigh.edu",
-    country: "USA",
-    year: 2020,
-    status: "in_hand",
-    docs: ["original_english"],   // US English-language degree
-    highlights: [
-      "Fulbright Scholarship Recipient",
-      "2020 Bloomberg Competition Participant",
-      "2019 IAFC Competition Participant",
-      "Graduate Senate Representative",
-    ],
-  },
-  {
-    id: 20,
-    level: "master",
-    titleEs: "Master en Ciencia de Datos",
-    titleEn: "Master in Data Science",
-    university: "Harvard University",
-    universityDomain: "harvard.edu",
-    country: "USA",
-    year: 2021,
-    status: "in_hand",
-    docs: ["original_english"],   // US English-language degree
-    highlights: [
-      "CGPA: 3.77",
-      "Capstone: Lyme Disease Incidence Rate Modeling & Risk Assessment Mapping",
-      "Research: COVID-19 spread prediction using Google Mobility data",
-      "Research: Benford's Law applied to Twitter data",
-    ],
-  },
-  {
     id: 21,
     level: "master",
     titleEs: "Master en Ingeniería Matemática y Computación",
@@ -324,7 +324,7 @@ export const DEGREES: Degree[] = [
     universityDomain: "unir.net",
     country: "Spain",
     year: 2025,
-    status: "to_collect",   // A retirar
+    status: "to_collect",
     docs: ["original_spanish"],
   },
   {
@@ -336,7 +336,7 @@ export const DEGREES: Degree[] = [
     universityDomain: "unq.edu.ar",
     country: "Argentina",
     year: 2026,
-    status: "processing",   // En trámite — studies done, diploma being issued
+    status: "processing",
     docs: [],
   },
   {
@@ -349,7 +349,7 @@ export const DEGREES: Degree[] = [
     country: "Argentina",
     year: null,
     estimatedYear: 2027,
-    status: "in_progress",   // Currently pursuing
+    status: "in_progress",
     docs: [],
   },
   {
@@ -362,7 +362,7 @@ export const DEGREES: Degree[] = [
     country: "Spain",
     year: null,
     estimatedYear: 2027,
-    status: "in_progress",   // Currently pursuing
+    status: "in_progress",
     docs: [],
   },
 
