@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import {
   DEGREES,
@@ -41,31 +41,64 @@ const COUNTRY_FLAG_URLS: Record<string, string> = {
   Spain:     "https://flagcdn.com/w20/es.png",
 };
 
+const UNI_META: Record<string, { initials: string; color: string }> = {
+  "liceosuperior.edu.ar":  { initials: "LSCI",  color: "#1a6985" },
+  "siglo21.edu.ar":        { initials: "SXXI",  color: "#c25c16" },
+  "unlam.edu.ar":          { initials: "UNLaM", color: "#1e3a8a" },
+  "unq.edu.ar":            { initials: "UNQ",   color: "#166534" },
+  "unrn.edu.ar":           { initials: "UNRN",  color: "#7c2d12" },
+  "uncaus.edu.ar":         { initials: "UNCA",  color: "#831843" },
+  "ucu.edu.ar":            { initials: "UCU",   color: "#1e40af" },
+  "uopeople.edu":          { initials: "UoP",   color: "#0369a1" },
+  "unimoron.edu.ar":       { initials: "UMor",  color: "#4a1d96" },
+  "unsam.edu.ar":          { initials: "UNSAM", color: "#14532d" },
+  "uba.ar":                { initials: "UBA",   color: "#7f1d1d" },
+  "uneatlantico.es":       { initials: "UNEA",  color: "#92400e" },
+  "lehigh.edu":            { initials: "LU",    color: "#8b0000" },
+  "harvard.edu":           { initials: "HU",    color: "#a51c30" },
+  "unir.net":              { initials: "UNIR",  color: "#1e3a8a" },
+};
+
 function UniversityLogo({ domain, name }: { domain?: string; name: string }) {
-  if (!domain) {
+  const [failed, setFailed] = React.useState(false);
+  const [triedFavicon, setTriedFavicon] = React.useState(false);
+
+  const meta = domain ? UNI_META[domain] : null;
+  const initials = meta?.initials ?? name.split(" ").filter(w => /^[A-Z]/.test(w)).map(w => w[0]).join("").slice(0, 4) || "U";
+  const color = meta?.color ?? "#2a3355";
+
+  if (!domain || failed) {
     return (
-      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-navy text-lg">
-        🎓
+      <div
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border"
+        style={{ background: color }}
+        title={name}
+      >
+        <span className="text-center font-bold text-white" style={{ fontSize: initials.length > 3 ? "7px" : "8px", lineHeight: 1.1 }}>
+          {initials}
+        </span>
       </div>
     );
   }
+
   return (
     <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-white p-1">
       <Image
-        src={`https://logo.clearbit.com/${domain}`}
+        src={triedFavicon ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : `https://logo.clearbit.com/${domain}`}
         alt={name}
         width={32}
         height={32}
         className="object-contain"
-        onError={(e) => {
-          const target = e.target as HTMLImageElement;
-          target.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+        onError={() => {
+          if (!triedFavicon) { setTriedFavicon(true); }
+          else { setFailed(true); }
         }}
         unoptimized
       />
     </div>
   );
 }
+
 
 const conferred    = DEGREES.filter((d) => d.status === "in_hand").length;
 const fullyDoc     = DEGREES.filter((d) => d.docs.length >= 5).length;
