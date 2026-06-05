@@ -69,6 +69,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Operador en Psicología Social",
     titleEn: "Social Psychology Practitioner",
     university: "Escuela Superior de Psicología Social",
+    universityDomain: "psicologiasocial.edu.ar",
     country: "Argentina",
     year: 2014,
     status: "in_hand",

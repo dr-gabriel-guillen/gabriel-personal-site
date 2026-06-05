@@ -40,22 +40,23 @@ const COUNTRY_FLAG_URLS: Record<string, string> = {
   Spain:     "https://flagcdn.com/w20/es.png",
 };
 
-const UNI_META: Record<string, { initials: string; color: string }> = {
-  "liceosuperior.edu.ar":  { initials: "LSCI",  color: "#1a6985" },
-  "siglo21.edu.ar":        { initials: "SXXI",  color: "#c25c16" },
-  "unlam.edu.ar":          { initials: "UNLaM", color: "#1e3a8a" },
-  "unq.edu.ar":            { initials: "UNQ",   color: "#166534" },
-  "unrn.edu.ar":           { initials: "UNRN",  color: "#7c2d12" },
-  "uncaus.edu.ar":         { initials: "UNCA",  color: "#831843" },
-  "ucu.edu.ar":            { initials: "UCU",   color: "#1e40af" },
-  "uopeople.edu":          { initials: "UoP",   color: "#0369a1" },
-  "unimoron.edu.ar":       { initials: "UMor",  color: "#4a1d96" },
-  "unsam.edu.ar":          { initials: "UNSAM", color: "#14532d" },
-  "uba.ar":                { initials: "UBA",   color: "#7f1d1d" },
-  "uneatlantico.es":       { initials: "UNEA",  color: "#92400e" },
-  "lehigh.edu":            { initials: "LU",    color: "#8b0000" },
-  "harvard.edu":           { initials: "HU",    color: "#a51c30" },
-  "unir.net":              { initials: "UNIR",  color: "#1e3a8a" },
+const UNI_META: Record<string, { initials: string; color: string; logo?: string }> = {
+  "psicologiasocial.edu.ar": { initials: "ESPS", color: "#5b21d9", logo: "/logos/psicologiasocial.png" },
+  "liceosuperior.edu.ar":  { initials: "LSCI",  color: "#1a6985", logo: "/logos/liceosuperior.png" },
+  "siglo21.edu.ar":        { initials: "SXXI",  color: "#c25c16", logo: "/logos/siglo21.jpg" },
+  "unlam.edu.ar":          { initials: "UNLaM", color: "#1e3a8a", logo: "/logos/unlam.jpg" },
+  "unq.edu.ar":            { initials: "UNQ",   color: "#166534", logo: "/logos/unq.png" },
+  "unrn.edu.ar":           { initials: "UNRN",  color: "#7c2d12", logo: "/logos/unrn.svg" },
+  "uncaus.edu.ar":         { initials: "UNCA",  color: "#831843", logo: "/logos/uncaus.png" },
+  "ucu.edu.ar":            { initials: "UCU",   color: "#1e40af", logo: "/logos/ucu.png" },
+  "uopeople.edu":          { initials: "UoP",   color: "#0369a1", logo: "/logos/uopeople.webp" },
+  "unimoron.edu.ar":       { initials: "UMor",  color: "#4a1d96", logo: "/logos/unimoron.jpg" },
+  "unsam.edu.ar":          { initials: "UNSAM", color: "#14532d", logo: "/logos/unsam.png" },
+  "uba.ar":                { initials: "UBA",   color: "#7f1d1d", logo: "/logos/uba.png" },
+  "uneatlantico.es":       { initials: "UNEA",  color: "#92400e", logo: "/logos/uneatlantico.jpg" },
+  "lehigh.edu":            { initials: "LU",    color: "#8b0000", logo: "/logos/lehigh.png" },
+  "harvard.edu":           { initials: "HU",    color: "#a51c30", logo: "/logos/harvard.png" },
+  "unir.net":              { initials: "UNIR",  color: "#1e3a8a", logo: "/logos/unir.png" },
 };
 
 function UniversityLogo({ domain, name }: { domain?: string; name: string }) {
@@ -65,25 +66,20 @@ function UniversityLogo({ domain, name }: { domain?: string; name: string }) {
 
   return (
     <div
-      className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border"
+      className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border"
       style={{ background: color }}
       title={name}
     >
       <span className="z-0 text-center font-bold text-white" style={{ fontSize: initials.length > 3 ? "6px" : "8px", lineHeight: 1.1 }}>
         {initials}
       </span>
-      {domain && (
+      {meta?.logo && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={`https://logo.clearbit.com/${domain}`}
+          src={meta.logo}
           alt=""
           className="absolute inset-0 z-10 h-full w-full rounded-full bg-white object-contain p-1"
-          onError={(e) => {
-            const t = e.currentTarget;
-            const fb = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
-            if (t.src !== fb) { t.src = fb; }
-            else { t.style.display = "none"; }
-          }}
+          onError={(e) => { e.currentTarget.style.display = "none"; }}
         />
       )}
     </div>
