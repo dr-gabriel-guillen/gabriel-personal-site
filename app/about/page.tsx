@@ -57,7 +57,7 @@ export default function AboutPage() {
               <div className="mt-6 space-y-5 text-base leading-9 text-cream-dim">
                 <p>
                   Dr. Gabriel B. Guillen is a computer engineer, attorney, data scientist, and polymath based
-                  in San Jose, California. He holds 25 university-level degrees — spanning engineering, law,
+                  in San Jose, California. He holds 22 university-level degrees — spanning engineering, law,
                   mathematics, economics, education, philosophy, and health sciences — earned across
                   Argentina, the United States, and Spain over 15 years of continuous academic study.
                 </p>
@@ -138,11 +138,11 @@ export default function AboutPage() {
         <div className="mx-auto max-w-2xl">
           <h2 className="font-display text-4xl font-bold text-cream">Explore the full record</h2>
           <p className="mt-4 text-base leading-8 text-cream-dim">
-            Browse all 25 degrees with documentation status, or review 17 professional certifications.
+            Browse all 22 degrees with documentation status, or review 17 professional certifications.
           </p>
           <div className="mt-8 flex flex-col gap-4 justify-center sm:flex-row">
             <Link href="/degrees" className="bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.18em] text-navy transition hover:bg-gold-light">
-              View All 25 Degrees
+              View All 22 Degrees
             </Link>
             <Link href="/certifications" className="border border-gold/50 px-8 py-4 text-sm font-bold uppercase tracking-[0.18em] text-gold transition hover:border-gold hover:bg-gold/10">
               View Certifications

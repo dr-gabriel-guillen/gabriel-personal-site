@@ -36,7 +36,7 @@ const domains = [
 ];
 
 const statCards = [
-  { value: "25", label: "University Degrees", sub: "3 countries · 5 academic levels" },
+  { value: "22", label: "University Degrees", sub: "3 countries · 5 academic levels" },
   { value: "17", label: "Professional Certifications", sub: "AWS · IAPP · PMI · NVIDIA" },
   { value: "14+", label: "Years of Experience", sub: "Engineering, Law & Academia" },
   { value: "3", label: "Countries of Study", sub: "Argentina · USA · Spain" },
@@ -61,7 +61,8 @@ const timeline = [
 ];
 
 const conferred = DEGREES.filter((d) => d.status === "in_hand").length;
-const inProgress = DEGREES.filter((d) => d.status !== "in_hand").length;
+const awaiting = DEGREES.filter((d) => d.status === "processing" || d.status === "to_collect").length;
+const pursuing = DEGREES.filter((d) => d.status === "in_progress").length;
 const fullyDoc = DEGREES.filter((d) => d.docs.length === 5).length;
 
 export default function Home() {
@@ -105,7 +106,7 @@ export default function Home() {
               href="/degrees"
               className="bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.18em] text-navy transition hover:bg-gold-light"
             >
-              View All 25 Degrees
+              View All 22 Degrees
             </Link>
             <Link
               href="/about"
@@ -116,7 +117,7 @@ export default function Home() {
           </div>
 
           <p className="mt-6 text-xs text-cream-dim">
-            {conferred} degrees conferred · {inProgress} in progress · {fullyDoc} with full apostille + certified English translation
+            {conferred} conferred · {awaiting} awaiting diploma · {pursuing} currently pursuing · {fullyDoc} fully apostilled with certified English translation
           </p>
         </div>
       </section>
@@ -131,7 +132,7 @@ export default function Home() {
                 Pursuing the Guinness Record for Most University Degrees
               </h2>
               <p className="mt-6 text-lg leading-9 text-cream-dim">
-                With 25 university-level degrees spanning pre-graduate, graduate, specialist, master's,
+                With 22 university-level degrees spanning pre-graduate, graduate, specialist, master's,
                 and doctoral programs across Argentina, the United States, and Spain — Dr. Guillen is
                 actively compiling the documentation necessary to submit a Guinness World Records application.
               </p>
@@ -229,7 +230,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { href: "/degrees", icon: "🎓", title: "All Degrees", desc: "25 degrees with doc status and equivalency" },
+              { href: "/degrees", icon: "🎓", title: "All Degrees", desc: "22 degrees with doc status and equivalency" },
               { href: "/certifications", icon: "📋", title: "Certifications", desc: "AWS, IAPP, PMI, NVIDIA credentials" },
               { href: "/experience", icon: "💼", title: "Experience", desc: "PayPal, Meta, academia & entrepreneurship" },
               { href: "/research", icon: "🔬", title: "Research", desc: "Publications, theses & academic work" },

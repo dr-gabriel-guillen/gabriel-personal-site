@@ -41,22 +41,24 @@ const COUNTRY_FLAG_URLS: Record<string, string> = {
 };
 
 const UNI_META: Record<string, { initials: string; color: string; logo?: string }> = {
-  "psicologiasocial.edu.ar": { initials: "ESPS", color: "#5b21d9", logo: "/logos/psicologiasocial.png" },
-  "liceosuperior.edu.ar":  { initials: "LSCI",  color: "#1a6985", logo: "/logos/liceosuperior.png" },
+  // Universities with clean, legible logos:
   "siglo21.edu.ar":        { initials: "SXXI",  color: "#c25c16", logo: "/logos/siglo21.jpg" },
   "unlam.edu.ar":          { initials: "UNLaM", color: "#1e3a8a", logo: "/logos/unlam.jpg" },
   "unq.edu.ar":            { initials: "UNQ",   color: "#166534", logo: "/logos/unq.png" },
-  "unrn.edu.ar":           { initials: "UNRN",  color: "#7c2d12", logo: "/logos/unrn.svg" },
-  "uncaus.edu.ar":         { initials: "UNCA",  color: "#831843", logo: "/logos/uncaus.png" },
-  "ucu.edu.ar":            { initials: "UCU",   color: "#1e40af", logo: "/logos/ucu.png" },
+  "unrn.edu.ar":           { initials: "UNRN",  color: "#7c2d12", logo: "/logos/unrn.png" },
   "uopeople.edu":          { initials: "UoP",   color: "#0369a1", logo: "/logos/uopeople.webp" },
-  "unimoron.edu.ar":       { initials: "UMor",  color: "#4a1d96", logo: "/logos/unimoron.jpg" },
   "unsam.edu.ar":          { initials: "UNSAM", color: "#14532d", logo: "/logos/unsam.png" },
   "uba.ar":                { initials: "UBA",   color: "#7f1d1d", logo: "/logos/uba.png" },
   "uneatlantico.es":       { initials: "UNEA",  color: "#92400e", logo: "/logos/uneatlantico.jpg" },
   "lehigh.edu":            { initials: "LU",    color: "#8b0000", logo: "/logos/lehigh.png" },
   "harvard.edu":           { initials: "HU",    color: "#a51c30", logo: "/logos/harvard.png" },
   "unir.net":              { initials: "UNIR",  color: "#1e3a8a", logo: "/logos/unir.png" },
+  // No high-quality logo available → clean colored initials badge:
+  "uncaus.edu.ar":         { initials: "UNCA",  color: "#831843" },
+  "ucu.edu.ar":            { initials: "UCU",   color: "#1e40af" },
+  "unimoron.edu.ar":       { initials: "UM",    color: "#4a1d96" },
+  "liceosuperior.edu.ar":  { initials: "LSCI",  color: "#1a6985" },
+  "psicologiasocial.edu.ar": { initials: "ESPS", color: "#5b21d9" },
 };
 
 function UniversityLogo({ domain, name }: { domain?: string; name: string }) {
@@ -64,24 +66,41 @@ function UniversityLogo({ domain, name }: { domain?: string; name: string }) {
   const initials = meta?.initials ?? "U";
   const color = meta?.color ?? "#2a3355";
 
+  // Logo universities get a clean white rounded-square tile (object-contain handles
+  // any aspect ratio without distortion). Others get a colored initials badge.
+  if (meta?.logo) {
+    return (
+      <div
+        className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-white p-1.5"
+        title={name}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={meta.logo}
+          alt={name}
+          className="max-h-full max-w-full object-contain"
+          onError={(e) => {
+            const t = e.currentTarget;
+            t.style.display = "none";
+            const parent = t.parentElement;
+            if (parent) {
+              parent.style.background = color;
+              parent.innerHTML = `<span style="color:#fff;font-weight:700;font-size:${initials.length > 3 ? "7px" : "9px"};text-align:center;line-height:1.1">${initials}</span>`;
+            }
+          }}
+        />
+      </div>
+    );
+  }
   return (
     <div
-      className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border"
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border"
       style={{ background: color }}
       title={name}
     >
-      <span className="z-0 text-center font-bold text-white" style={{ fontSize: initials.length > 3 ? "6px" : "8px", lineHeight: 1.1 }}>
+      <span className="text-center font-bold text-white" style={{ fontSize: initials.length > 3 ? "7px" : "9px", lineHeight: 1.1 }}>
         {initials}
       </span>
-      {meta?.logo && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={meta.logo}
-          alt=""
-          className="absolute inset-0 z-10 h-full w-full rounded-full bg-white object-contain p-1"
-          onError={(e) => { e.currentTarget.style.display = "none"; }}
-        />
-      )}
     </div>
   );
 }
@@ -138,7 +157,7 @@ export default function DegreesPage() {
       <section className="border-b border-border bg-navy px-5 py-8 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-gold">
-            International Documentation Pipeline (Argentine Degrees)
+            International Documentation Pipeline (Spanish-Language Degrees — Argentina & Spain)
           </p>
           <div className="flex flex-wrap items-center gap-2">
             {[
@@ -338,7 +357,7 @@ export default function DegreesPage() {
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold">Degree Equivalency</p>
           <h2 className="mt-4 font-display text-3xl font-bold text-cream">
-            Argentine Degrees in the U.S. Academic Context
+            Argentine & Spanish Degrees in the U.S. Academic Context
           </h2>
           <div className="mt-6 grid gap-4 text-sm leading-8 text-cream-dim sm:grid-cols-2 lg:grid-cols-3">
             {[
