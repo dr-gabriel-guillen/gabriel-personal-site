@@ -18,7 +18,7 @@ const DOC_STEPS: DocStatus[] = [
   "second_apostille",
 ];
 
-const LEVEL_ORDER: DegreeLevel[] = ["pre_grad", "grad", "specialist", "master", "doctorate"];
+const LEVEL_ORDER: DegreeLevel[] = ["doctorate", "master", "grad", "specialist", "pre_grad"];
 
 const LEVEL_COLORS: Record<DegreeLevel, string> = {
   pre_grad:    "bg-sky-900/50 text-sky-300 border-sky-700",
@@ -273,7 +273,9 @@ export default function DegreesPage() {
                                 </span>
                               </div>
 
-                              <p className="mt-0.5 text-sm italic text-cream-dim">{degree.titleEs}</p>
+                              {degree.country !== "USA" && (
+                                <p className="mt-0.5 text-sm italic text-cream-dim">{degree.titleEs}</p>
+                              )}
 
                               <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-cream-dim">
                                 <span className="flex items-center gap-1.5">

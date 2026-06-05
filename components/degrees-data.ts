@@ -395,11 +395,11 @@ export const DOC_LABELS: Record<DocStatus, string> = {
 };
 
 export const LEVEL_LABELS: Record<DegreeLevel, string> = {
-  pre_grad: "Pre-Graduate",
-  grad: "Graduate (Bachelor)",
+  pre_grad:   "Pre-Graduate",
+  grad:       "Bachelor's",
   specialist: "Specialist",
-  master: "Master's",
-  doctorate: "Doctorate",
+  master:     "Master's",
+  doctorate:  "Doctorate",
 };
 
 export const STATUS_LABELS: Record<DegreeStatus, string> = {
