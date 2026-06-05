@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 const jobs = [
   {
     company: "PayPal Inc.",
+    logo: "/companies/paypal.png",
     role: "Project Leader — Sr. Software Engineer",
     location: "San Jose, California",
     years: "2025 – Present",
@@ -21,6 +22,7 @@ const jobs = [
   },
   {
     company: "Meta Platforms, Inc.",
+    logo: "/companies/meta.png",
     role: "Software Engineer",
     location: "Sunnyvale, California",
     years: "2024",
@@ -61,6 +63,7 @@ const jobs = [
   },
   {
     company: "Lehigh University",
+    logo: "/companies/lehigh.png",
     role: "Graduate Teaching Assistant",
     location: "Bethlehem, Pennsylvania",
     years: "2019 – 2020",
@@ -86,6 +89,7 @@ const jobs = [
   },
   {
     company: "National University of La Matanza",
+    logo: "/logos/unlam.jpg",
     role: "Head of Advanced Programming / Teacher",
     location: "Buenos Aires, Argentina",
     years: "2013 – 2018",
@@ -166,10 +170,18 @@ export default function ExperiencePage() {
                   </div>
                   <div className="rounded-lg border border-border bg-navy-card p-6">
                     <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div>
+                      <div className="flex items-start gap-4">
+                        {"logo" in job && job.logo && (
+                          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-white p-1.5">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={job.logo} alt={job.company} className="h-full w-full object-contain" />
+                          </span>
+                        )}
+                        <div>
                         <h2 className="font-display text-2xl font-bold text-cream">{job.company}</h2>
                         <p className="mt-1 text-base font-bold text-gold">{job.role}</p>
                         <p className="mt-1 text-sm text-cream-dim">{job.location}</p>
+                        </div>
                       </div>
                       <span className="rounded border border-border bg-navy px-3 py-1 text-xs font-bold text-cream-dim">
                         {job.years}

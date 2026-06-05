@@ -8,52 +8,57 @@ const certGroups = [
   {
     org: "Amazon Web Services (AWS)",
     icon: "☁️",
+    logo: "/companies/aws.png",
     color: "amber",
     certs: [
-      { name: "AWS Certified Solutions Architect – Professional", level: "Professional", code: "SAP" },
-      { name: "AWS Certified DevOps Engineer – Professional", level: "Professional", code: "DOP" },
-      { name: "AWS Certified Machine Learning – Specialty", level: "Specialty", code: "MLS" },
-      { name: "AWS Certified Security – Specialty", level: "Specialty", code: "SCS" },
-      { name: "AWS Certified Advanced Networking – Specialty", level: "Specialty", code: "ANS" },
-      { name: "AWS Certified Data Engineer – Associate", level: "Associate", code: "DEA" },
-      { name: "AWS Certified AI Practitioner", level: "Foundational", code: "AIF" },
+      { name: "AWS Certified Solutions Architect – Professional", level: "Professional", code: "SAP", badge: "/badges/aws-sa-pro.png" },
+      { name: "AWS Certified DevOps Engineer – Professional", level: "Professional", code: "DOP", badge: "/badges/aws-devops-pro.png" },
+      { name: "AWS Certified Machine Learning – Specialty", level: "Specialty", code: "MLS", badge: "/badges/aws-ml.png" },
+      { name: "AWS Certified Security – Specialty", level: "Specialty", code: "SCS", badge: "/badges/aws-security.png" },
+      { name: "AWS Certified Advanced Networking – Specialty", level: "Specialty", code: "ANS", badge: "/badges/aws-networking.png" },
+      { name: "AWS Certified Data Engineer – Associate", level: "Associate", code: "DEA", badge: "/badges/aws-data-eng.png" },
+      { name: "AWS Certified AI Practitioner", level: "Foundational", code: "AIF", badge: "/badges/aws-ai.png" },
     ],
   },
   {
     org: "International Association of Privacy Professionals (IAPP)",
     icon: "🔐",
+    logo: "/companies/iapp.png",
     color: "blue",
     certs: [
-      { name: "CIPP/US — Certified Information Privacy Professional (United States)", level: "CIPP", code: "CIPP/US" },
-      { name: "CIPP/E — Certified Information Privacy Professional (Europe)", level: "CIPP", code: "CIPP/E" },
-      { name: "CIPP/C — Certified Information Privacy Professional (Canada)", level: "CIPP", code: "CIPP/C" },
-      { name: "CIPT — Certified Information Privacy Technologist", level: "CIPT", code: "CIPT" },
-      { name: "CIPM — Certified Information Privacy Manager", level: "CIPM", code: "CIPM" },
-      { name: "AIGP — Artificial Intelligence Governance Professional", level: "AIGP", code: "AIGP" },
+      { name: "CIPP/US — Certified Information Privacy Professional (United States)", level: "CIPP", code: "CIPP/US", badge: "/badges/cipp-us.png" },
+      { name: "CIPP/E — Certified Information Privacy Professional (Europe)", level: "CIPP", code: "CIPP/E", badge: "/badges/cipp-e.png" },
+      { name: "CIPP/C — Certified Information Privacy Professional (Canada)", level: "CIPP", code: "CIPP/C", badge: "/badges/cipp-c.png" },
+      { name: "CIPT — Certified Information Privacy Technologist", level: "CIPT", code: "CIPT", badge: "/companies/iapp.png" },
+      { name: "CIPM — Certified Information Privacy Manager", level: "CIPM", code: "CIPM", badge: "/companies/iapp.png" },
+      { name: "AIGP — Artificial Intelligence Governance Professional", level: "AIGP", code: "AIGP", badge: "/companies/iapp.png" },
     ],
   },
   {
     org: "Project Management Institute (PMI)",
     icon: "📋",
+    logo: "/companies/pmi.png",
     color: "violet",
     certs: [
-      { name: "Project Management Professional (PMP)", level: "Professional", code: "PMP" },
+      { name: "Project Management Professional (PMP)", level: "Professional", code: "PMP", badge: "/companies/pmi.png" },
     ],
   },
   {
     org: "NVIDIA",
     icon: "🤖",
+    logo: "/companies/nvidia.png",
     color: "green",
     certs: [
-      { name: "NVIDIA Certificate Associate in Generative AI & LLMs", level: "Associate", code: "NVIDIA" },
+      { name: "NVIDIA Certificate Associate in Generative AI & LLMs", level: "Associate", code: "NVIDIA", badge: "/companies/nvidia.png" },
     ],
   },
   {
     org: "State Bar of California",
     icon: "⚖️",
+    logo: "/companies/calbar.png",
     color: "rose",
     certs: [
-      { name: "Attorney at Law — California State Bar", level: "License #361094", code: "CA BAR" },
+      { name: "Attorney at Law — California State Bar", level: "License #361094", code: "CA BAR", badge: "/companies/calbar.png" },
     ],
   },
 ];
@@ -122,25 +127,32 @@ export default function CertificationsPage() {
             return (
               <div key={group.org}>
                 <div className="mb-6 flex items-center gap-3">
-                  <span className="text-3xl">{group.icon}</span>
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white p-1.5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={group.logo} alt={group.org} className="h-full w-full object-contain" />
+                  </span>
                   <h2 className="font-display text-3xl font-bold text-cream">{group.org}</h2>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {group.certs.map((cert) => (
                     <div
                       key={cert.code}
-                      className={`rounded-lg border ${c.border} ${c.bg} p-5 transition`}
+                      className={`flex items-start gap-4 rounded-lg border ${c.border} ${c.bg} p-5 transition`}
                     >
-                      <div className="flex items-start justify-between gap-3">
-                        <div>
-                          <p className="font-bold text-cream leading-6">{cert.name}</p>
-                          <span className={`mt-2 inline-block rounded border px-2 py-0.5 text-xs font-bold ${c.badge}`}>
+                      <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-white/95 p-1.5">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={cert.badge} alt={cert.name} className="h-full w-full object-contain" />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold text-cream leading-6">{cert.name}</p>
+                        <div className="mt-2 flex flex-wrap items-center gap-2">
+                          <span className={`inline-block rounded border px-2 py-0.5 text-xs font-bold ${c.badge}`}>
                             {cert.level}
                           </span>
+                          <span className="rounded bg-navy px-2 py-0.5 text-xs font-bold text-cream-dim">
+                            {cert.code}
+                          </span>
                         </div>
-                        <span className="shrink-0 rounded bg-navy px-2 py-1 text-xs font-bold text-cream-dim">
-                          {cert.code}
-                        </span>
                       </div>
                     </div>
                   ))}
