@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import {
   DEGREES,
   DOC_LABELS,
@@ -60,41 +59,33 @@ const UNI_META: Record<string, { initials: string; color: string }> = {
 };
 
 function UniversityLogo({ domain, name }: { domain?: string; name: string }) {
-  const [failed, setFailed] = React.useState(false);
-  const [triedFavicon, setTriedFavicon] = React.useState(false);
-
   const meta = domain ? UNI_META[domain] : null;
-  const initials = meta?.initials ?? name.split(" ").filter(w => /^[A-Z]/.test(w)).map(w => w[0]).join("").slice(0, 4) || "U";
+  const initials = meta?.initials ?? "U";
   const color = meta?.color ?? "#2a3355";
 
-  if (!domain || failed) {
-    return (
-      <div
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border"
-        style={{ background: color }}
-        title={name}
-      >
-        <span className="text-center font-bold text-white" style={{ fontSize: initials.length > 3 ? "7px" : "8px", lineHeight: 1.1 }}>
-          {initials}
-        </span>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-white p-1">
-      <Image
-        src={triedFavicon ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : `https://logo.clearbit.com/${domain}`}
-        alt={name}
-        width={32}
-        height={32}
-        className="object-contain"
-        onError={() => {
-          if (!triedFavicon) { setTriedFavicon(true); }
-          else { setFailed(true); }
-        }}
-        unoptimized
-      />
+    <div
+      className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border"
+      style={{ background: color }}
+      title={name}
+    >
+      <span className="z-0 text-center font-bold text-white" style={{ fontSize: initials.length > 3 ? "6px" : "8px", lineHeight: 1.1 }}>
+        {initials}
+      </span>
+      {domain && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={`https://logo.clearbit.com/${domain}`}
+          alt=""
+          className="absolute inset-0 z-10 h-full w-full rounded-full bg-white object-contain p-1"
+          onError={(e) => {
+            const t = e.currentTarget;
+            const fb = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+            if (t.src !== fb) { t.src = fb; }
+            else { t.style.display = "none"; }
+          }}
+        />
+      )}
     </div>
   );
 }
