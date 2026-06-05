@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -32,16 +33,15 @@ export default function AboutPage() {
           <div className="grid gap-12 lg:grid-cols-[0.42fr_0.58fr]">
             {/* Photo placeholder */}
             <div className="flex items-start">
-              <div className="w-full max-w-sm rounded-lg border border-border bg-navy-card">
-                <div className="flex aspect-[4/5] flex-col items-center justify-center gap-3 text-center p-8">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-gold text-4xl">
-                    👤
-                  </div>
-                  <p className="text-sm text-cream-dim">Dr. Gabriel B. Guillen</p>
-                  <p className="text-xs text-cream-dim">San Jose, California</p>
-                  <p className="mt-4 text-xs italic text-cream-dim">
-                    Portrait photo — add <code className="bg-navy px-1">main_portrait.jpg</code> to <code className="bg-navy px-1">/public</code>
-                  </p>
+              <div className="w-full max-w-sm overflow-hidden rounded-lg border border-border">
+                <div className="relative aspect-[4/5]">
+                  <Image
+                    src="/main_portrait.jpg"
+                    alt="Dr. Gabriel B. Guillen"
+                    fill
+                    className="object-cover object-top"
+                    priority
+                  />
                 </div>
               </div>
             </div>
