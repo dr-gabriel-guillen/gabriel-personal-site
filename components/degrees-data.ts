@@ -1,15 +1,16 @@
 export type DocStatus =
   | "original_spanish"
+  | "original_english"
   | "apostille"
   | "english_translation"
   | "translator_cert"
   | "second_apostille";
 
 export type DegreeStatus =
-  | "in_hand"
-  | "in_progress"
-  | "to_collect"
-  | "estimated";
+  | "in_hand"       // "En mano" — conferred, diploma in hand
+  | "processing"    // "En trámite" — finished studying, diploma being issued
+  | "to_collect"    // "A retirar" — diploma ready, pending pickup
+  | "in_progress";  // Currently enrolled/pursuing
 
 export type DegreeLevel =
   | "pre_grad"
@@ -24,13 +25,14 @@ export interface Degree {
   titleEs: string;
   titleEn: string;
   university: string;
+  universityDomain?: string; // for logo via clearbit
   country: "Argentina" | "USA" | "Spain";
   year: number | null;
   estimatedYear?: number;
   status: DegreeStatus;
   docs: DocStatus[];
   highlights?: string[];
-  file?: string; // filename in Completos/ if available
+  file?: string;
 }
 
 export const DEGREES: Degree[] = [
@@ -53,6 +55,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Traductor Técnico Científico en lengua inglesa",
     titleEn: "Technical-Scientific Translator (English)",
     university: "Liceo Superior de Cultura Inglesa",
+    universityDomain: "liceosuperior.edu.ar",
     country: "Argentina",
     year: 2021,
     status: "in_hand",
@@ -65,6 +68,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Martillero, Corredor Público y Corredor Inmobiliario",
     titleEn: "Auctioneer, Public Broker & Real Estate Broker",
     university: "Universidad Empresarial Siglo XXI",
+    universityDomain: "siglo21.edu.ar",
     country: "Argentina",
     year: 2022,
     status: "in_hand",
@@ -79,6 +83,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Ingeniero en Informática",
     titleEn: "Computer Engineer",
     university: "Universidad Nacional de la Matanza",
+    universityDomain: "unlam.edu.ar",
     country: "Argentina",
     year: 2014,
     status: "in_hand",
@@ -92,6 +97,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Contador Público Nacional",
     titleEn: "Certified Public Accountant (CPA)",
     university: "Universidad Nacional de Quilmes",
+    universityDomain: "unq.edu.ar",
     country: "Argentina",
     year: 2016,
     status: "in_hand",
@@ -105,6 +111,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Licenciado en Administración",
     titleEn: "Bachelor of Business Administration",
     university: "Universidad Nacional de Quilmes",
+    universityDomain: "unq.edu.ar",
     country: "Argentina",
     year: 2016,
     status: "in_hand",
@@ -117,6 +124,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Profesor de Enseñanza de Nivel Medio y Superior en Matemática",
     titleEn: "High School & University Mathematics Teacher",
     university: "Universidad Nacional de Río Negro",
+    universityDomain: "unrn.edu.ar",
     country: "Argentina",
     year: 2017,
     status: "in_hand",
@@ -129,6 +137,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Abogado",
     titleEn: "Juris Doctor (J.D.) — Argentine Law",
     university: "Universidad Nacional del Chaco Austral",
+    universityDomain: "uncaus.edu.ar",
     country: "Argentina",
     year: 2021,
     status: "in_hand",
@@ -145,6 +154,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Escribano",
     titleEn: "Notary Public (Argentine Civil Law)",
     university: "Universidad Empresarial Siglo XXI",
+    universityDomain: "siglo21.edu.ar",
     country: "Argentina",
     year: 2022,
     status: "in_hand",
@@ -157,6 +167,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Traductor Público en inglés",
     titleEn: "Sworn Public Translator (English)",
     university: "Universidad de Concepción del Uruguay",
+    universityDomain: "ucu.edu.ar",
     country: "Argentina",
     year: 2024,
     status: "in_hand",
@@ -169,9 +180,10 @@ export const DEGREES: Degree[] = [
     titleEs: "Licenciatura en Gestión de Negocios Inmobiliarios",
     titleEn: "Bachelor in Real Estate Business Management",
     university: "Universidad Empresarial Siglo XXI",
+    universityDomain: "siglo21.edu.ar",
     country: "Argentina",
     year: 2025,
-    status: "to_collect",
+    status: "to_collect",   // A retirar
     docs: ["original_spanish"],
   },
   {
@@ -180,10 +192,11 @@ export const DEGREES: Degree[] = [
     titleEs: "Actuario",
     titleEn: "Actuary",
     university: "Universidad Empresarial Siglo XXI",
+    universityDomain: "siglo21.edu.ar",
     country: "Argentina",
     year: 2026,
-    status: "in_progress",
-    docs: ["original_spanish"],
+    status: "processing",   // En trámite — studies done, diploma being issued
+    docs: [],
   },
   {
     id: 13,
@@ -191,10 +204,11 @@ export const DEGREES: Degree[] = [
     titleEs: "Bachelor en Ciencias de la Salud",
     titleEn: "Bachelor in Health Sciences",
     university: "University of the People",
+    universityDomain: "uopeople.edu",
     country: "USA",
     year: null,
     estimatedYear: 2028,
-    status: "estimated",
+    status: "in_progress",   // Currently pursuing
     docs: [],
   },
 
@@ -205,6 +219,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Especialista en Higiene y Seguridad en el Trabajo",
     titleEn: "Specialist in Occupational Health & Safety",
     university: "Universidad de Morón",
+    universityDomain: "unimoron.edu.ar",
     country: "Argentina",
     year: 2016,
     status: "in_hand",
@@ -217,6 +232,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Especialista en Industria Petroquímica",
     titleEn: "Specialist in Petrochemical Industry",
     university: "Universidad Nacional de General San Martín",
+    universityDomain: "unsam.edu.ar",
     country: "Argentina",
     year: 2021,
     status: "in_hand",
@@ -229,6 +245,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Especialista en Docencia en Entornos Virtuales",
     titleEn: "Specialist in Teaching in Virtual Environments",
     university: "Universidad Nacional de Quilmes",
+    universityDomain: "unq.edu.ar",
     country: "Argentina",
     year: 2021,
     status: "in_hand",
@@ -241,9 +258,10 @@ export const DEGREES: Degree[] = [
     titleEs: "Especialista en Evaluación Universitaria",
     titleEn: "Specialist in University Assessment",
     university: "Universidad de Buenos Aires",
+    universityDomain: "uba.ar",
     country: "Argentina",
     year: 2026,
-    status: "to_collect",
+    status: "to_collect",   // A retirar
     docs: ["original_spanish"],
   },
 
@@ -254,6 +272,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Master en Administración de Empresas de Base Tecnológica",
     titleEn: "MBA in Technology-Based Business",
     university: "Universidad Europea del Atlántico",
+    universityDomain: "uneatlantico.es",
     country: "Spain",
     year: 2018,
     status: "in_hand",
@@ -266,10 +285,11 @@ export const DEGREES: Degree[] = [
     titleEs: "Master of Science in Financial Engineering",
     titleEn: "Master of Science in Financial Engineering",
     university: "Lehigh University",
+    universityDomain: "lehigh.edu",
     country: "USA",
     year: 2020,
     status: "in_hand",
-    docs: ["original_spanish"],
+    docs: ["original_english"],   // US English-language degree
     highlights: [
       "Fulbright Scholarship Recipient",
       "2020 Bloomberg Competition Participant",
@@ -283,10 +303,11 @@ export const DEGREES: Degree[] = [
     titleEs: "Master en Ciencia de Datos",
     titleEn: "Master in Data Science",
     university: "Harvard University",
+    universityDomain: "harvard.edu",
     country: "USA",
     year: 2021,
     status: "in_hand",
-    docs: ["original_spanish"],
+    docs: ["original_english"],   // US English-language degree
     highlights: [
       "CGPA: 3.77",
       "Capstone: Lyme Disease Incidence Rate Modeling & Risk Assessment Mapping",
@@ -300,9 +321,10 @@ export const DEGREES: Degree[] = [
     titleEs: "Master en Ingeniería Matemática y Computación",
     titleEn: "Master in Mathematical Engineering & Computer Science",
     university: "Universidad Internacional de La Rioja",
+    universityDomain: "unir.net",
     country: "Spain",
     year: 2025,
-    status: "to_collect",
+    status: "to_collect",   // A retirar
     docs: ["original_spanish"],
   },
   {
@@ -311,9 +333,10 @@ export const DEGREES: Degree[] = [
     titleEs: "Master en Educación",
     titleEn: "Master in Education",
     university: "Universidad Nacional de Quilmes",
+    universityDomain: "unq.edu.ar",
     country: "Argentina",
     year: 2026,
-    status: "in_progress",
+    status: "processing",   // En trámite — studies done, diploma being issued
     docs: [],
   },
   {
@@ -322,10 +345,11 @@ export const DEGREES: Degree[] = [
     titleEs: "Master en Filosofía",
     titleEn: "Master in Philosophy",
     university: "Universidad Nacional de Quilmes",
+    universityDomain: "unq.edu.ar",
     country: "Argentina",
     year: null,
     estimatedYear: 2027,
-    status: "estimated",
+    status: "in_progress",   // Currently pursuing
     docs: [],
   },
   {
@@ -334,10 +358,11 @@ export const DEGREES: Degree[] = [
     titleEs: "Master en Computación Cuántica",
     titleEn: "Master in Quantum Computing",
     university: "Universidad Internacional de La Rioja",
+    universityDomain: "unir.net",
     country: "Spain",
     year: null,
     estimatedYear: 2027,
-    status: "estimated",
+    status: "in_progress",   // Currently pursuing
     docs: [],
   },
 
@@ -348,6 +373,7 @@ export const DEGREES: Degree[] = [
     titleEs: "Doctor en Ciencias Económicas",
     titleEn: "PhD in Economic Sciences",
     university: "Universidad Nacional de la Matanza",
+    universityDomain: "unlam.edu.ar",
     country: "Argentina",
     year: 2021,
     status: "in_hand",
@@ -360,10 +386,11 @@ export const DEGREES: Degree[] = [
 ];
 
 export const DOC_LABELS: Record<DocStatus, string> = {
-  original_spanish: "Original (Spanish)",
-  apostille: "Apostille",
-  english_translation: "English Translation",
-  translator_cert: "Translator Association Cert.",
+  original_spanish: "Original Diploma (Spanish)",
+  original_english: "Original Diploma (English)",
+  apostille: "Apostille (The Hague)",
+  english_translation: "Certified English Translation",
+  translator_cert: "Translator Association Certification",
   second_apostille: "Second Apostille",
 };
 
@@ -371,13 +398,13 @@ export const LEVEL_LABELS: Record<DegreeLevel, string> = {
   pre_grad: "Pre-Graduate",
   grad: "Graduate (Bachelor)",
   specialist: "Specialist",
-  master: "Master",
+  master: "Master's",
   doctorate: "Doctorate",
 };
 
 export const STATUS_LABELS: Record<DegreeStatus, string> = {
   in_hand: "Conferred",
-  in_progress: "In Progress",
-  to_collect: "Awaiting Collection",
-  estimated: "Estimated",
+  processing: "Diploma Processing",
+  to_collect: "Ready to Collect",
+  in_progress: "Currently Pursuing",
 };
