@@ -44,11 +44,11 @@ const UNI_META: Record<string, { initials: string; color: string; logo?: string 
   // Universities with clean, legible logos:
   "siglo21.edu.ar":        { initials: "SXXI",  color: "#c25c16", logo: "/logos/siglo21.jpg" },
   "unlam.edu.ar":          { initials: "UNLaM", color: "#1e3a8a", logo: "/logos/unlam.jpg" },
-  "unq.edu.ar":            { initials: "UNQ",   color: "#166534", logo: "/logos/unq.png" },
-  "unrn.edu.ar":           { initials: "UNRN",  color: "#7c2d12", logo: "/logos/unrn.png" },
+  "unq.edu.ar":            { initials: "UNQ",   color: "#166534" }, // official logo is white-on-transparent → use initials
+  "unrn.edu.ar":           { initials: "UNRN",  color: "#7c2d12" }, // logo too faint → use initials
   "uopeople.edu":          { initials: "UoP",   color: "#0369a1", logo: "/logos/uopeople.webp" },
   "unsam.edu.ar":          { initials: "UNSAM", color: "#14532d", logo: "/logos/unsam.png" },
-  "uba.ar":                { initials: "UBA",   color: "#7f1d1d", logo: "/logos/uba.png" },
+  "uba.ar":                { initials: "UBA",   color: "#7f1d1d" }, // official logo is white-on-transparent → use initials
   "uneatlantico.es":       { initials: "UNEA",  color: "#92400e", logo: "/logos/uneatlantico.jpg" },
   "lehigh.edu":            { initials: "LU",    color: "#8b0000", logo: "/logos/lehigh.png" },
   "harvard.edu":           { initials: "HU",    color: "#a51c30", logo: "/logos/harvard.png" },
