@@ -152,7 +152,8 @@ export default function Home() {
               {[
                 { label: "Degrees Conferred", value: conferred, icon: "🎓" },
                 { label: "Fully Documented", value: fullyDoc, icon: "📜" },
-                { label: "In Progress / Pending", value: inProgress, icon: "⏳" },
+                { label: "Awaiting Diploma", value: awaiting, icon: "⏳" },
+                { label: "Currently Pursuing", value: pursuing, icon: "📚" },
                 { label: "Doc Pipeline Steps", value: "5", icon: "✅" },
                 { label: "Countries of Study", value: "3", icon: "🌎" },
                 { label: "Academic Levels", value: "5", icon: "🏛️" },
