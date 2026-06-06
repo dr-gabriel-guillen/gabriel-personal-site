@@ -1,10 +1,7 @@
-import type { Metadata } from "next";
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "About — Dr. Gabriel B. Guillen",
-};
+import { useLang } from "@/components/language";
 
 const credentials = [
   { label: "Computer Engineer", detail: "UNLaM · Buenos Aires, Argentina" },
@@ -19,12 +16,12 @@ const credentials = [
   { label: "Real Estate Broker & Auctioneer", detail: "Siglo XXI · Argentine Civil Law" },
 ];
 
-const languages = [
-  { lang: "Spanish", level: "Native" },
-  { lang: "English", level: "Professional (C2)" },
-];
-
 export default function AboutPage() {
+  const { t } = useLang();
+  const languages = [
+    { lang: t("about.lang.spanish"), level: t("about.lang.spanish.level") },
+    { lang: t("about.lang.english"), level: t("about.lang.english.level") },
+  ];
   return (
     <div className="pt-20">
       {/* Header */}
@@ -47,37 +44,18 @@ export default function AboutPage() {
             </div>
 
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">About</p>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("about.eyebrow")}</p>
               <h1 className="mt-5 font-display text-5xl font-bold leading-tight text-cream lg:text-6xl">
                 Dr. Gabriel B. Guillen, PhD, Esq.
               </h1>
               <p className="mt-4 text-sm font-bold uppercase tracking-[0.2em] text-gold">
-                San Jose, California · +1 (470) 685-8701
+                {t("about.contact_line")}
               </p>
               <div className="mt-6 space-y-5 text-base leading-9 text-cream-dim">
-                <p>
-                  Dr. Gabriel B. Guillen is a computer engineer, attorney, data scientist, and polymath based
-                  in San Jose, California. He holds 22 university-level degrees — spanning engineering, law,
-                  mathematics, economics, education, philosophy, and health sciences — earned across
-                  Argentina, the United States, and Spain over 15 years of continuous academic study.
-                </p>
-                <p>
-                  Professionally, he currently serves as a Sr. Software Engineer and Project Leader at
-                  PayPal, where he leads cross-border wallet interoperability initiatives and serves as
-                  the team's Legal & Privacy liaison. He previously engineered ML pipelines at Meta
-                  (Sunnyvale) and led multinational software teams as a country manager.
-                </p>
-                <p>
-                  A Fulbright Scholar, he completed his Master's in Financial Engineering at Lehigh
-                  University (2020) and his Master's in Data Science at Harvard University (2022, CGPA 3.77).
-                  His doctoral dissertation at UNLaM applied bio-inspired metaheuristic algorithms to
-                  predict high-volatility stock markets.
-                </p>
-                <p>
-                  Admitted to the California State Bar (License #361094) in 2025 and previously to the
-                  Buenos Aires Bar in 2022, he combines deep technical expertise with active legal
-                  practice in privacy, technology, and corporate law.
-                </p>
+                <p>{t("about.bio1")}</p>
+                <p>{t("about.bio2")}</p>
+                <p>{t("about.bio3")}</p>
+                <p>{t("about.bio4")}</p>
               </div>
             </div>
           </div>
@@ -87,7 +65,7 @@ export default function AboutPage() {
       {/* Key credentials */}
       <section className="px-5 py-14 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-6 text-xs font-bold uppercase tracking-[0.3em] text-gold">Selected Credentials</p>
+          <p className="mb-6 text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("about.credentials")}</p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {credentials.map((c) => (
               <div key={c.label} className="rounded-lg border border-border bg-navy-card p-4">
@@ -103,7 +81,7 @@ export default function AboutPage() {
       <section className="border-t border-border bg-navy-mid px-5 py-14 lg:px-8">
         <div className="mx-auto max-w-7xl grid gap-12 lg:grid-cols-2">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Languages</p>
+            <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("about.languages")}</p>
             <div className="mt-5 flex gap-4">
               {languages.map((l) => (
                 <div key={l.lang} className="rounded-lg border border-border bg-navy-card px-6 py-4 text-center">
@@ -114,7 +92,7 @@ export default function AboutPage() {
             </div>
           </div>
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Connect</p>
+            <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("about.connect")}</p>
             <div className="mt-5 space-y-3 text-sm">
               <a href="mailto:gguillen@alumni.harvard.edu" className="flex items-center gap-3 text-cream-dim transition hover:text-gold">
                 <span className="text-xl">✉️</span> gguillen@alumni.harvard.edu
@@ -136,9 +114,9 @@ export default function AboutPage() {
       {/* CTA */}
       <section className="border-t border-border px-5 py-14 lg:px-8 text-center">
         <div className="mx-auto max-w-2xl">
-          <h2 className="font-display text-4xl font-bold text-cream">Explore the full record</h2>
+          <h2 className="font-display text-4xl font-bold text-cream">{t("about.cta.title")}</h2>
           <p className="mt-4 text-base leading-8 text-cream-dim">
-            Browse all 22 degrees with documentation status, or review 17 professional certifications.
+            {t("about.cta.desc")}
           </p>
           <div className="mt-8 flex flex-col gap-4 justify-center sm:flex-row">
             <Link href="/degrees" className="bg-gold px-8 py-4 text-sm font-bold uppercase tracking-[0.18em] text-navy transition hover:bg-gold-light">

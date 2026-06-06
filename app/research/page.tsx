@@ -1,8 +1,5 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Research — Dr. Gabriel B. Guillen",
-};
+"use client";
+import { useLang } from "@/components/language";
 
 const thesis = [
   {
@@ -70,39 +67,37 @@ const typeColors: Record<string, string> = {
 };
 
 export default function ResearchPage() {
+  const { t } = useLang();
   return (
     <div className="pt-20">
       {/* Header */}
       <section className="border-b border-border bg-navy-mid px-5 py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Academic Work</p>
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("res.eyebrow")}</p>
           <h1 className="mt-5 font-display text-6xl font-bold text-cream lg:text-7xl">
-            Research & Publications
+            {t("res.title")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-9 text-cream-dim">
-            Doctoral dissertation, Harvard capstone, and research papers spanning quantitative finance,
-            epidemiology, social media analytics, and natural language processing.
-          </p>
+          <p className="mt-5 max-w-2xl text-lg leading-9 text-cream-dim">{t("res.intro")}</p>
         </div>
       </section>
 
       {/* Doctoral Thesis */}
       <section className="px-5 py-12 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-6 text-xs font-bold uppercase tracking-[0.3em] text-gold">Doctoral Dissertation</p>
-          {thesis.map((t) => (
-            <div key={t.title} className="rounded-lg border border-gold/30 bg-gold/5 p-8">
+          <p className="mb-6 text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("res.thesis.label")}</p>
+          {thesis.map((th) => (
+            <div key={th.title} className="rounded-lg border border-gold/30 bg-gold/5 p-8">
               <div className="flex flex-wrap items-start gap-3">
                 <span className="rounded border border-gold/50 bg-gold/10 px-3 py-1 text-xs font-bold text-gold">
-                  {t.level}
+                  {th.level}
                 </span>
                 <span className="rounded border border-border bg-navy px-3 py-1 text-xs text-cream-dim">
-                  {t.year}
+                  {th.year}
                 </span>
               </div>
-              <h2 className="mt-4 font-display text-3xl font-bold text-cream">{t.title}</h2>
-              <p className="mt-2 text-sm font-bold text-gold">{t.institution}</p>
-              <p className="mt-4 text-base leading-8 text-cream-dim">{t.description}</p>
+              <h2 className="mt-4 font-display text-3xl font-bold text-cream">{th.title}</h2>
+              <p className="mt-2 text-sm font-bold text-gold">{th.institution}</p>
+              <p className="mt-4 text-base leading-8 text-cream-dim">{th.description}</p>
             </div>
           ))}
         </div>
@@ -111,7 +106,7 @@ export default function ResearchPage() {
       {/* Research papers */}
       <section className="border-t border-border px-5 pb-16 pt-4 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="mb-6 text-xs font-bold uppercase tracking-[0.3em] text-gold">Research Papers & Projects</p>
+          <p className="mb-6 text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("res.papers.label")}</p>
           <div className="space-y-4">
             {research.map((r) => (
               <div key={r.title} className="rounded-lg border border-border bg-navy-card p-6">
@@ -136,7 +131,7 @@ export default function ResearchPage() {
       {/* Skills */}
       <section className="border-t border-border bg-navy-mid px-5 py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Research Methods & Tools</p>
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("res.methods.label")}</p>
           <div className="mt-6 flex flex-wrap gap-3">
             {[
               "Python", "R", "SQL", "Jupyter Notebooks", "Machine Learning", "NLP",

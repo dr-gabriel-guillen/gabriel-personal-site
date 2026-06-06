@@ -1,8 +1,5 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Certifications — Dr. Gabriel B. Guillen",
-};
+"use client";
+import { useLang } from "@/components/language";
 
 const certGroups = [
   {
@@ -94,20 +91,17 @@ const colorMap: Record<string, { badge: string; border: string; bg: string }> = 
 const totalCerts = certGroups.reduce((sum, g) => sum + g.certs.length, 0);
 
 export default function CertificationsPage() {
+  const { t } = useLang();
   return (
     <div className="pt-20">
       {/* Header */}
       <section className="border-b border-border bg-navy-mid px-5 py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Professional Credentials</p>
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("cert.eyebrow")}</p>
           <h1 className="mt-5 font-display text-6xl font-bold text-cream lg:text-7xl">
-            {totalCerts} Certifications
+            {totalCerts} {t("nav.certifications")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-9 text-cream-dim">
-            Professional certifications spanning cloud architecture, data privacy, project management,
-            artificial intelligence, and legal practice — from AWS, IAPP, PMI, NVIDIA, and the
-            California State Bar.
-          </p>
+          <p className="mt-5 max-w-2xl text-lg leading-9 text-cream-dim">{t("cert.intro")}</p>
           <div className="mt-8 flex flex-wrap gap-6">
             {certGroups.map((g) => (
               <div key={g.org} className="text-center">
@@ -168,26 +162,18 @@ export default function CertificationsPage() {
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-10 lg:grid-cols-2">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Privacy Depth</p>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("cert.privacy.label")}</p>
               <h2 className="mt-4 font-display text-4xl font-bold text-cream">
-                6 IAPP Credentials — All Major Privacy Jurisdictions
+                {t("cert.privacy.title")}
               </h2>
-              <p className="mt-5 text-base leading-8 text-cream-dim">
-                Holding CIPP certifications for the United States, Europe, and Canada — plus the
-                CIPT (technology), CIPM (management), and AIGP (AI governance) credentials — Dr. Guillen
-                is among a small global cohort to hold all principal IAPP certifications simultaneously.
-              </p>
+              <p className="mt-5 text-base leading-8 text-cream-dim">{t("cert.privacy.desc")}</p>
             </div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">AWS Depth</p>
+              <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("cert.aws.label")}</p>
               <h2 className="mt-4 font-display text-4xl font-bold text-cream">
-                7 AWS Credentials — Professional Through Specialty
+                {t("cert.aws.title")}
               </h2>
-              <p className="mt-5 text-base leading-8 text-cream-dim">
-                Dual Professional-level certifications (Solutions Architect + DevOps Engineer),
-                three Specialty-level credentials (ML, Security, Advanced Networking), plus Associate
-                and Foundational credentials — covering the full AWS professional certification track.
-              </p>
+              <p className="mt-5 text-base leading-8 text-cream-dim">{t("cert.aws.desc")}</p>
             </div>
           </div>
         </div>

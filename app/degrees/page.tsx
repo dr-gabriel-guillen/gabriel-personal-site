@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useLang } from "@/components/language";
 import {
   DEGREES,
   DOC_LABELS,
-  LEVEL_LABELS,
   STATUS_LABELS,
   type DegreeLevel,
   type DocStatus,
@@ -115,9 +115,14 @@ const processing   = DEGREES.filter((d) => d.status === "processing").length;
 const earnedCount  = DEGREES.filter((d) => d.status !== "in_progress").length;
 
 export default function DegreesPage() {
+  const { lang, t } = useLang();
   const [filterLevel,   setFilterLevel]   = useState<DegreeLevel | "all">("all");
   const [filterCountry, setFilterCountry] = useState<string>("all");
   const [filterStatus,  setFilterStatus]  = useState<string>("all");
+
+  const levelLabel = (l: DegreeLevel) => t(`level.${l}`);
+  const statusLabel = (s: keyof typeof STATUS_COLORS) =>
+    t(`common.${s === "in_hand" ? "conferred" : s}`);
 
   const filtered = DEGREES.filter((d) => {
     if (filterLevel   !== "all" && d.level   !== filterLevel)   return false;
@@ -132,23 +137,20 @@ export default function DegreesPage() {
       <section className="border-b border-border bg-navy-mid px-5 py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.25em] text-gold">
-            ★ Guinness World Record Candidate
+            ★ {t("deg.badge")}
           </div>
           <h1 className="mt-6 font-display text-6xl font-bold text-cream lg:text-7xl">
-            {earnedCount} University Degrees
+            {earnedCount} {t("home.stat.degrees")}
           </h1>
           <p className="mt-5 max-w-3xl text-lg leading-9 text-cream-dim">
-            Earned across Argentina, the United States, and Spain — spanning five academic levels
-            from pre-graduate through doctorate. Completed degrees are authenticated through a
-            five-step international pipeline for Guinness World Records submission.
-            Additionally pursuing {inProgress} more degrees currently in progress.
+            {t("deg.intro")} {t("deg.pursuing_note")}
           </p>
           <div className="mt-8 flex flex-wrap gap-8">
-            <div><p className="font-display text-4xl font-bold text-gold">{conferred}</p><p className="mt-1 text-xs text-cream-dim">Conferred</p></div>
-            <div><p className="font-display text-4xl font-bold text-gold">{fullyDoc}</p><p className="mt-1 text-xs text-cream-dim">Fully Documented (5/5)</p></div>
-            <div><p className="font-display text-4xl font-bold text-gold">{processing}</p><p className="mt-1 text-xs text-cream-dim">Diploma Processing</p></div>
-            <div><p className="font-display text-4xl font-bold text-gold">{toCollect}</p><p className="mt-1 text-xs text-cream-dim">Ready to Collect</p></div>
-            <div><p className="font-display text-4xl font-bold text-gold">{inProgress}</p><p className="mt-1 text-xs text-cream-dim">Currently Pursuing</p></div>
+            <div><p className="font-display text-4xl font-bold text-gold">{conferred}</p><p className="mt-1 text-xs text-cream-dim">{t("deg.stat.conferred")}</p></div>
+            <div><p className="font-display text-4xl font-bold text-gold">{fullyDoc}</p><p className="mt-1 text-xs text-cream-dim">{t("deg.stat.documented")}</p></div>
+            <div><p className="font-display text-4xl font-bold text-gold">{processing}</p><p className="mt-1 text-xs text-cream-dim">{t("deg.stat.processing")}</p></div>
+            <div><p className="font-display text-4xl font-bold text-gold">{toCollect}</p><p className="mt-1 text-xs text-cream-dim">{t("deg.stat.collect")}</p></div>
+            <div><p className="font-display text-4xl font-bold text-gold">{inProgress}</p><p className="mt-1 text-xs text-cream-dim">{t("deg.stat.pursuing")}</p></div>
           </div>
         </div>
       </section>
@@ -157,7 +159,7 @@ export default function DegreesPage() {
       <section className="border-b border-border bg-navy px-5 py-8 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-gold">
-            International Documentation Pipeline (Spanish-Language Degrees — Argentina & Spain)
+            {t("deg.pipeline.title")}
           </p>
           <div className="flex flex-wrap items-center gap-2">
             {[
@@ -177,7 +179,7 @@ export default function DegreesPage() {
             ))}
           </div>
           <p className="mt-3 text-xs text-cream-dim">
-            US degrees (Lehigh, Harvard, University of the People) are issued in English — no translation pipeline required.
+            {t("deg.pipeline.note")}
           </p>
         </div>
       </section>
@@ -185,10 +187,10 @@ export default function DegreesPage() {
       {/* Status legend */}
       <section className="border-b border-border bg-navy-mid px-5 py-4 lg:px-8">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-cream-dim">Status:</span>
-          {(Object.entries(STATUS_LABELS) as [keyof typeof STATUS_LABELS, string][]).map(([key, label]) => (
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-cream-dim">{t("deg.status_label")}</span>
+          {(Object.keys(STATUS_LABELS) as (keyof typeof STATUS_COLORS)[]).map((key) => (
             <div key={key} className={`rounded border px-2 py-0.5 text-xs font-bold ${STATUS_COLORS[key]}`}>
-              {label}
+              {statusLabel(key)}
             </div>
           ))}
         </div>
@@ -201,7 +203,7 @@ export default function DegreesPage() {
             onClick={() => setFilterLevel("all")}
             className={`rounded px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] transition ${filterLevel === "all" ? "bg-gold text-navy" : "border border-border text-cream-dim hover:border-gold/50 hover:text-gold"}`}
           >
-            All Levels
+            {t("deg.all_levels")}
           </button>
           {LEVEL_ORDER.map((l) => (
             <button
@@ -209,7 +211,7 @@ export default function DegreesPage() {
               onClick={() => setFilterLevel(l)}
               className={`rounded px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] transition ${filterLevel === l ? "bg-gold text-navy" : "border border-border text-cream-dim hover:border-gold/50 hover:text-gold"}`}
             >
-              {LEVEL_LABELS[l]}
+              {levelLabel(l)}
             </button>
           ))}
 
@@ -219,24 +221,24 @@ export default function DegreesPage() {
               onChange={(e) => setFilterCountry(e.target.value)}
               className="rounded border border-border bg-navy-card px-3 py-1.5 text-xs text-cream-dim focus:border-gold focus:outline-none"
             >
-              <option value="all">🌍 All Countries</option>
+              <option value="all">🌍 {t("deg.all_countries")}</option>
               <option value="Argentina">🇦🇷 Argentina</option>
               <option value="USA">🇺🇸 USA</option>
-              <option value="Spain">🇪🇸 Spain</option>
+              <option value="Spain">🇪🇸 España</option>
             </select>
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
               className="rounded border border-border bg-navy-card px-3 py-1.5 text-xs text-cream-dim focus:border-gold focus:outline-none"
             >
-              <option value="all">All Statuses</option>
-              <option value="in_hand">Conferred</option>
-              <option value="processing">Diploma Processing</option>
-              <option value="to_collect">Ready to Collect</option>
-              <option value="in_progress">Currently Pursuing</option>
+              <option value="all">{t("deg.all_statuses")}</option>
+              <option value="in_hand">{t("common.conferred")}</option>
+              <option value="processing">{t("common.processing")}</option>
+              <option value="to_collect">{t("common.to_collect")}</option>
+              <option value="in_progress">{t("common.in_progress")}</option>
             </select>
           </div>
-          <span className="text-xs text-cream-dim">{filtered.length} shown</span>
+          <span className="text-xs text-cream-dim">{filtered.length} {t("deg.shown")}</span>
         </div>
       </section>
 
@@ -249,7 +251,7 @@ export default function DegreesPage() {
             return (
               <div key={level} className="mb-10">
                 <h2 className="mb-4 font-display text-3xl font-bold text-cream">
-                  {LEVEL_LABELS[level]}
+                  {levelLabel(level)}
                   <span className="ml-3 font-sans text-base font-normal text-cream-dim">({group.length})</span>
                 </h2>
                 <div className="space-y-3">
@@ -257,7 +259,6 @@ export default function DegreesPage() {
                     // For US degrees we show a different doc indicator
                     const isUsEnglish = degree.country === "USA";
                     const docCount = degree.docs.length;
-                    const maxDocs = isUsEnglish ? 1 : 5;
 
                     return (
                       <div
@@ -270,17 +271,21 @@ export default function DegreesPage() {
                             <UniversityLogo domain={degree.universityDomain} name={degree.university} />
                             <div className="min-w-0 flex-1">
                               <div className="flex flex-wrap items-center gap-2">
-                                <span className="text-base font-bold leading-snug text-cream">{degree.titleEn}</span>
+                                <span className="text-base font-bold leading-snug text-cream">
+                                  {lang === "es" && degree.country !== "USA" ? degree.titleEs : degree.titleEn}
+                                </span>
                                 <span className={`shrink-0 rounded border px-2 py-0.5 text-xs font-bold ${LEVEL_COLORS[degree.level]}`}>
-                                  {LEVEL_LABELS[degree.level]}
+                                  {levelLabel(degree.level)}
                                 </span>
                                 <span className={`shrink-0 rounded border px-2 py-0.5 text-xs font-bold ${STATUS_COLORS[degree.status]}`}>
-                                  {STATUS_LABELS[degree.status]}
+                                  {statusLabel(degree.status)}
                                 </span>
                               </div>
 
                               {degree.country !== "USA" && (
-                                <p className="mt-0.5 text-sm italic text-cream-dim">{degree.titleEs}</p>
+                                <p className="mt-0.5 text-sm italic text-cream-dim">
+                                  {lang === "es" ? degree.titleEn : degree.titleEs}
+                                </p>
                               )}
 
                               <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-cream-dim">
@@ -289,7 +294,7 @@ export default function DegreesPage() {
                                   <span>{degree.university}</span>
                                 </span>
                                 <span className="font-bold text-gold">
-                                  {degree.year ?? (degree.estimatedYear ? `Est. ${degree.estimatedYear}` : "In progress")}
+                                  {degree.year ?? (degree.estimatedYear ? `${lang === "es" ? "Est." : "Est."} ${degree.estimatedYear}` : (lang === "es" ? "En curso" : "In progress"))}
                                 </span>
                               </div>
 
@@ -307,8 +312,7 @@ export default function DegreesPage() {
 
                           {/* Right: doc pipeline */}
                           <div className="shrink-0 text-right">
-                            <p className="mb-1.5 text-xs font-bold uppercase tracking-[0.15em] text-cream-dim">
-                              Docs
+                            <p className="mb-1.5 text-xs font-bold uppercase tracking-[0.15em] text-cream-dim">                              {t("deg.docs")}
                             </p>
                             {isUsEnglish ? (
                               <div className="flex gap-1.5 justify-end">
@@ -355,9 +359,9 @@ export default function DegreesPage() {
       {/* Equivalency */}
       <section className="border-t border-border bg-navy-mid px-5 py-14 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold">Degree Equivalency</p>
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-gold">{t("deg.equiv.label")}</p>
           <h2 className="mt-4 font-display text-3xl font-bold text-cream">
-            Argentine & Spanish Degrees in the U.S. Academic Context
+            {t("deg.equiv.title")}
           </h2>
           <div className="mt-6 grid gap-4 text-sm leading-8 text-cream-dim sm:grid-cols-2 lg:grid-cols-3">
             {[

@@ -1,8 +1,5 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Experience — Dr. Gabriel B. Guillen",
-};
+"use client";
+import { useLang } from "@/components/language";
 
 const jobs = [
   {
@@ -128,25 +125,23 @@ const jobs = [
 ];
 
 export default function ExperiencePage() {
+  const { t } = useLang();
   return (
     <div className="pt-20">
       {/* Header */}
       <section className="border-b border-border bg-navy-mid px-5 py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">Career History</p>
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">{t("exp.eyebrow")}</p>
           <h1 className="mt-5 font-display text-6xl font-bold text-cream lg:text-7xl">
-            14+ Years of Experience
+            {t("exp.title")}
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-9 text-cream-dim">
-            From founding a web studio in Buenos Aires to engineering at PayPal and Meta in Silicon Valley —
-            bridging software engineering, legal practice, data science, and academia across three continents.
-          </p>
+          <p className="mt-5 max-w-2xl text-lg leading-9 text-cream-dim">{t("exp.intro")}</p>
           <div className="mt-8 flex flex-wrap gap-6">
             {[
-              { value: "9", label: "Roles" },
-              { value: "4", label: "Countries" },
+              { value: "9", label: t("exp.stat.roles") },
+              { value: "4", label: t("exp.stat.countries") },
               { value: "PayPal · Meta", label: "Current / Recent" },
-              { value: "2011", label: "Career Start" },
+              { value: "2011", label: t("exp.stat.start") },
             ].map((s) => (
               <div key={s.label}>
                 <p className="font-display text-3xl font-bold text-gold">{s.value}</p>
