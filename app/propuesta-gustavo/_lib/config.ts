@@ -6,10 +6,9 @@ export const CONTACTO_ASUNTO =
   "Reunión de trabajo — Programa Piloto de Propuestas Vecinales";
 
 // ── Currículum ────────────────────────────────────────────────────────────────
-// TODO: cuando exista el CV, guardarlo como
-//   private/propuesta-gustavo/pdf/cv-gustavo-guillen.pdf
-// y cambiar este booleano a true. No hay que tocar nada más.
-export const CV_DISPONIBLE = false;
+// El CV vive en private/propuesta-gustavo/pdf/cv-gustavo-guillen.pdf.
+// Este booleano activa/desactiva la tarjeta de descarga.
+export const CV_DISPONIBLE = true;
 
 // ── Video y audio ─────────────────────────────────────────────────────────────
 // Los archivos pesados (35 MB + 21 MB) NO viven en el repo ni pasan por

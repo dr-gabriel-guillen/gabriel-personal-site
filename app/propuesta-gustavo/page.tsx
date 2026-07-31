@@ -134,6 +134,7 @@ export default async function PropuestaGustavoPage() {
   // Video, audio y ZIP viven en el bucket privado: solo se ofrecen si el
   // entorno tiene las credenciales de S3 configuradas.
   const s3Ok = s3Config() !== null;
+  const cvPeso = CV_DISPONIBLE ? await pesoDe("pdf/cv-gustavo-guillen.pdf") : null;
 
   const mailto = `mailto:${CONTACTO_EMAIL}?subject=${encodeURIComponent(CONTACTO_ASUNTO)}`;
 
@@ -411,7 +412,11 @@ export default async function PropuestaGustavoPage() {
                     Currículum del autor
                   </h3>
                   <p className="mt-1 text-sm leading-6 text-cream-dim">
-                    Trayectoria de Gustavo Omar Guillen.
+                    La trayectoria de Gustavo Omar Guillen: tres décadas en la
+                    administración pública nacional.
+                  </p>
+                  <p className="mt-2 text-xs text-cream-dim">
+                    PDF{cvPeso ? ` · ${cvPeso}` : ""}
                   </p>
                   <a
                     href={archivoUrl("pdf/cv-gustavo-guillen.pdf")}
