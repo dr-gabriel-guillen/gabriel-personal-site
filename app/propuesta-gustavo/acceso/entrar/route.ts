@@ -45,12 +45,18 @@ function claveCorrecta(ingresada: string, esperada: string): boolean {
   return timingSafeEqual(a, b);
 }
 
-function volverConError(req: NextRequest, codigo: string): NextResponse {
-  const url = new URL("/propuesta-gustavo", req.url);
-  url.searchParams.set("e", codigo);
-  const res = NextResponse.redirect(url, 303);
-  res.headers.set("Cache-Control", NO_STORE);
-  return res;
+// Location relativo a propósito: detrás de Amplify/CloudFront el server ve
+// host "localhost:3000", y un redirect absoluto armado desde req.url mandaría
+// el browser a localhost. El path relativo lo resuelve el propio browser.
+function redirigirA(path: string): NextResponse {
+  return new NextResponse(null, {
+    status: 303,
+    headers: { Location: path, "Cache-Control": NO_STORE },
+  });
+}
+
+function volverConError(codigo: string): NextResponse {
+  return redirigirA(`/propuesta-gustavo?e=${codigo}`);
 }
 
 export async function POST(req: NextRequest) {
@@ -60,29 +66,29 @@ export async function POST(req: NextRequest) {
     console.error(
       "[propuesta-gustavo] Faltan PROPUESTA_PASSWORD / PROPUESTA_COOKIE_SECRET en el entorno.",
     );
-    return volverConError(req, "config");
+    return volverConError("config");
   }
 
   const ip = ipDe(req);
-  if (rateLimited(ip)) return volverConError(req, "limite");
+  if (rateLimited(ip)) return volverConError("limite");
 
   let ingresada = "";
   try {
     const form = await req.formData();
     ingresada = String(form.get("clave") ?? "");
   } catch {
-    return volverConError(req, "clave");
+    return volverConError("clave");
   }
 
   if (!ingresada || !claveCorrecta(ingresada, password)) {
-    return volverConError(req, "clave");
+    return volverConError("clave");
   }
 
   // Login válido: se limpia el contador para que los ingresos legítimos
   // repetidos no terminen bloqueando a la destinataria.
   intentos.delete(ip);
 
-  const res = NextResponse.redirect(new URL("/propuesta-gustavo", req.url), 303);
+  const res = redirigirA("/propuesta-gustavo");
   res.cookies.set(PROPUESTA_COOKIE, await createPropuestaCookieValue(secret), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

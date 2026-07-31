@@ -25,8 +25,12 @@ export async function middleware(req: NextRequest) {
 
   let res: NextResponse;
   if (authed && pathname === "/propuesta-gustavo/acceso") {
-    // Ya está adentro: no tiene sentido mostrarle la puerta.
-    res = NextResponse.redirect(new URL("/propuesta-gustavo", req.url));
+    // Ya está adentro: en vez de la puerta se le sirve el contenido.
+    // (Rewrite y no redirect: el runtime del middleware exige Location
+    // absoluto, y detrás del proxy el host visible es localhost:3000.)
+    const url = req.nextUrl.clone();
+    url.pathname = "/propuesta-gustavo";
+    res = NextResponse.rewrite(url);
   } else if (!authed && !OPEN_PATHS.has(pathname)) {
     const url = req.nextUrl.clone();
     url.pathname = "/propuesta-gustavo/acceso";
