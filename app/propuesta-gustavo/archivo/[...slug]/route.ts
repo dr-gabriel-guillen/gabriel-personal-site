@@ -1,5 +1,6 @@
-import { promises as fs } from "node:fs";
+import { createReadStream, promises as fs } from "node:fs";
 import path from "node:path";
+import { Readable } from "node:stream";
 import { NextRequest, NextResponse } from "next/server";
 import { PROPUESTA_COOKIE, verifyPropuestaCookieValue } from "@/lib/propuesta-auth";
 import { ARCHIVOS, CV_DISPONIBLE } from "../../_lib/config";
@@ -44,9 +45,10 @@ export async function GET(
     });
   }
 
-  let data: Buffer;
+  const abs = path.join(PRIVATE_ROOT, def.rel);
+  let size: number;
   try {
-    data = await fs.readFile(path.join(PRIVATE_ROOT, def.rel));
+    size = (await fs.stat(abs)).size;
   } catch {
     return new NextResponse("No encontrado", {
       status: 404,
@@ -70,26 +72,31 @@ export async function GET(
   const m = range?.match(/^bytes=(\d+)-(\d*)$/);
   if (m) {
     const start = Number(m[1]);
-    const end = m[2] ? Math.min(Number(m[2]), data.byteLength - 1) : data.byteLength - 1;
-    if (start >= data.byteLength || start > end) {
+    const end = m[2] ? Math.min(Number(m[2]), size - 1) : size - 1;
+    if (start >= size || start > end) {
       return new NextResponse(null, {
         status: 416,
-        headers: { ...headersBase, "Content-Range": `bytes */${data.byteLength}` },
+        headers: { ...headersBase, "Content-Range": `bytes */${size}` },
       });
     }
-    const chunk = data.subarray(start, end + 1);
-    return new NextResponse(new Uint8Array(chunk), {
+    const stream = Readable.toWeb(
+      createReadStream(abs, { start, end }),
+    ) as ReadableStream;
+    return new NextResponse(stream, {
       status: 206,
       headers: {
         ...headersBase,
-        "Content-Length": String(chunk.byteLength),
-        "Content-Range": `bytes ${start}-${end}/${data.byteLength}`,
+        "Content-Length": String(end - start + 1),
+        "Content-Range": `bytes ${start}-${end}/${size}`,
       },
     });
   }
 
-  return new NextResponse(new Uint8Array(data), {
+  // Stream (no buffer): el compute de Amplify limita las respuestas
+  // buffereadas a ~6 MB y el ZIP completo lo supera (413 sin esto).
+  const stream = Readable.toWeb(createReadStream(abs)) as ReadableStream;
+  return new NextResponse(stream, {
     status: 200,
-    headers: { ...headersBase, "Content-Length": String(data.byteLength) },
+    headers: { ...headersBase, "Content-Length": String(size) },
   });
 }
