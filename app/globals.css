@@ -11,6 +11,11 @@
   --cream: #f0ead8;
   --cream-dim: #8e8878;
   --border: #2a3355;
+  /* Violeta de cortesía para /propuesta-gustavo (sello de destinataria).
+     No hay hex oficial de LLA; #A78BFA pasa AA sobre --navy (7,01:1) y
+     --navy-card (5,93:1). Se usa SOLO en el sello de la cabecera: para subir
+     o bajar su presencia, tocar únicamente este token y ese sello. */
+  --violet: #a78bfa;
 }
 
 * {
@@ -55,3 +60,57 @@ a {
 
 .border-border { border-color: var(--border); }
 .border-gold   { border-color: var(--gold); }
+
+/* Foco visible en todos los interactivos (accesibilidad) */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* /propuesta-gustavo — visor de figuras a pantalla completa */
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+}
+
+/* /propuesta-gustavo — impresión legible en blanco y negro */
+@media print {
+  [data-page="propuesta"] {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  [data-page="propuesta"] section {
+    background: #fff !important;
+    border-color: #ccc !important;
+  }
+  [data-page="propuesta"] h1,
+  [data-page="propuesta"] h2,
+  [data-page="propuesta"] h3,
+  [data-page="propuesta"] p,
+  [data-page="propuesta"] figcaption,
+  [data-page="propuesta"] blockquote,
+  [data-page="propuesta"] span {
+    color: #000 !important;
+  }
+  [data-page="propuesta"] a,
+  [data-page="propuesta"] button {
+    color: #000 !important;
+    background: none !important;
+    border: 1px solid #999 !important;
+  }
+  [data-page="propuesta"] div {
+    background: #fff !important;
+    border-color: #ccc !important;
+  }
+}

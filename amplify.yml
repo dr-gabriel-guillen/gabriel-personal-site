@@ -6,6 +6,10 @@ frontend:
         - npm install
     build:
       commands:
+        # Amplify expone las env vars solo en build: las copiamos a
+        # .env.production para que el runtime SSR (middleware + route handlers
+        # de /propuesta-gustavo) las tenga disponibles.
+        - env | grep -e PROPUESTA_ >> .env.production || true
         - npm run build
   artifacts:
     baseDirectory: .next

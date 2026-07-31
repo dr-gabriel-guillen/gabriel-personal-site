@@ -4,3 +4,6 @@ out
 dist
 .env*
 *.log
+
+# la propuesta usa .env.example como plantilla documentada
+!.env.example
