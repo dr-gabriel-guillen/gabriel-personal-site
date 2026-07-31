@@ -16,12 +16,39 @@ deploy. **No mover nada de esta carpeta a `/public`.**
 
 ## ANTES de desplegar: variables de entorno
 
-En Amplify (App settings → Environment variables) hay que cargar:
+En Amplify (Hosting → Environment variables) hay que cargar:
 
 | Variable | Valor |
 |---|---|
 | `PROPUESTA_PASSWORD` | la clave acordada (hoy: la que empieza con G…) |
 | `PROPUESTA_COOKIE_SECRET` | 64 hex al azar: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
+| `PROPUESTA_S3_BUCKET` | `gabriel-personal-site-media-452157035969` |
+| `PROPUESTA_S3_REGION` | `us-east-1` |
+| `PROPUESTA_S3_KEY_ID` / `PROPUESTA_S3_SECRET` | access key del usuario IAM `personal-site-media-reader` (solo `s3:GetObject` de ese bucket) |
+
+## Archivos grandes: bucket S3 privado
+
+Amplify corta las respuestas de más de ~6 MB (413), así que el **video (35 MB),
+el audio (21 MB) y el ZIP (7 MB)** no se sirven desde el repo: viven en el
+bucket privado `gabriel-personal-site-media-452157035969` (Block Public Access
+activado). La ruta protegida `/propuesta-gustavo/archivo/…` valida la cookie y
+redirige a un **link firmado SigV4 de 1 hora** (`lib/propuesta-s3.ts`, sin
+dependencias). Layout del bucket:
+
+```
+media/piloto-90-dias.mp4
+media/organizar-propuestas-vecinales.m4a
+zip/Propuesta-Programa-Piloto-completo.zip
+```
+
+Subidas (perfil `ggl-deploy` tiene PutObject sobre este bucket):
+
+```bash
+aws s3 cp archivo.mp4 s3://gabriel-personal-site-media-452157035969/media/piloto-90-dias.mp4 --profile ggl-deploy --content-type video/mp4
+```
+
+Si las variables S3 faltan en el entorno, la página degrada sola: tarjetas de
+video/audio en "Disponible a pedido" y sin botón "Descargar todo".
 
 `amplify.yml` las copia a `.env.production` durante el build para que el
 middleware y los handlers las vean en runtime. Sin ellas, la puerta devuelve
@@ -40,35 +67,32 @@ rate limit de 5 intentos por IP cada 15 minutos.
 
 ## Pendientes
 
-1. **Video (35 MB) y audio (21 MB).** Están en Descargas de la máquina de
-   Gabriel (`Piloto_de_90_Días.mp4` y
-   `Organizar_propuestas_vecinales_con_seis_datos_básicos.m4a`).
-   **No commitearlos al repo.** Camino recomendado: subir el video a YouTube
-   como **no listado** y poner el ID en `MEDIA.video.youtubeId` de
-   `app/propuesta-gustavo/_lib/config.ts` (se embebe vía `youtube-nocookie.com`
-   y no carga nada hasta que se toca reproducir). Alternativa: copiar los
-   archivos a `private/propuesta-gustavo/media/` y poner el nombre en
-   `MEDIA.*.src` (se sirven por la ruta protegida, con soporte de Range).
-   Mientras estén vacíos, la página muestra "Disponible a pedido".
+1. ~~Video y audio~~ — resuelto vía S3 (ver arriba): `MEDIA.*.src` en
+   `_lib/config.ts` apunta a las keys de `media/`. La alternativa YouTube "no
+   listado" (`MEDIA.*.youtubeId`, vía `youtube-nocookie.com`) sigue disponible
+   y tiene prioridad si se setea.
 2. **CV de Gustavo.** No existe todavía. Cuando esté: guardarlo como
    `private/propuesta-gustavo/pdf/cv-gustavo-guillen.pdf` y poner
    `CV_DISPONIBLE = true` en `_lib/config.ts`. Nada más.
 3. **Imagen Open Graph.** TODO en `app/propuesta-gustavo/layout.tsx`. Tiene
    que ser un asset público (WhatsApp la busca sin cookie), así que debe ser
-   una portada neutra sin contenido del documento.
+   una portada neutra sin contenido del documento. NO usar el mapa mental.
 4. ~~Peso real de cada archivo~~ — resuelto: la página hace `fs.stat` en cada
-   request y muestra el peso real.
+   request (los del ZIP/media, que viven en S3, son constantes: `ZIP_PESO` y
+   las duraciones en `_lib/config.ts`).
 
 ## El ZIP de "Descargar todo"
 
-`zip/Propuesta-Programa-Piloto-completo.zip` está prearmado (el pipeline de
-Amplify no tiene `zip` garantizado y no quisimos sumar dependencias). Si se
-actualiza algún documento, regenerarlo:
+Vive en S3 (`zip/Propuesta-Programa-Piloto-completo.zip`), no en el repo. Si
+se actualiza algún documento, regenerar y resubir:
 
 ```powershell
 $b="private\propuesta-gustavo"
-Compress-Archive -Force -DestinationPath "$b\zip\Propuesta-Programa-Piloto-completo.zip" -Path "$b\pdf\3-Resumen-de-una-pagina.pdf","$b\pdf\2-Proyecto-Programa-Piloto.pdf","$b\pdf\8-Presentacion-completa.pdf","$b\xlsx\7-Plantillas-operativas.xlsx","$b\docx\2-Proyecto-Programa-Piloto.docx","$b\pptx\8-Presentacion-completa.pptx"
+Compress-Archive -Force -DestinationPath "$env:TEMP\Propuesta-Programa-Piloto-completo.zip" -Path "$b\pdf\3-Resumen-de-una-pagina.pdf","$b\pdf\2-Proyecto-Programa-Piloto.pdf","$b\pdf\8-Presentacion-completa.pdf","$b\xlsx\7-Plantillas-operativas.xlsx","$b\docx\2-Proyecto-Programa-Piloto.docx","$b\pptx\8-Presentacion-completa.pptx"
+aws s3 cp "$env:TEMP\Propuesta-Programa-Piloto-completo.zip" s3://gabriel-personal-site-media-452157035969/zip/ --profile ggl-deploy --content-type application/zip
 ```
+
+Y actualizar `ZIP_PESO` en `_lib/config.ts` si cambió.
 
 ## Qué NO va acá jamás
 

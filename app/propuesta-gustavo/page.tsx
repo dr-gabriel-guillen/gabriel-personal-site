@@ -3,6 +3,7 @@ import path from "node:path";
 import Image from "next/image";
 import { FigureViewer } from "./_components/figure-viewer";
 import { LiteYouTube } from "./_components/lite-youtube";
+import { s3Config } from "@/lib/propuesta-s3";
 import {
   ARCHIVOS,
   CONTACTO_ASUNTO,
@@ -11,6 +12,7 @@ import {
   FIGURAS_DETALLE,
   FIGURAS_PRINCIPALES,
   MEDIA,
+  ZIP_PESO,
   archivoUrl,
 } from "./_lib/config";
 
@@ -23,7 +25,7 @@ const PRIVATE_ROOT = path.join(process.cwd(), "private", "propuesta-gustavo");
 
 async function pesoDe(slug: string): Promise<string | null> {
   const def = ARCHIVOS[slug];
-  if (!def) return null;
+  if (!def?.rel) return null;
   try {
     const st = await fs.stat(path.join(PRIVATE_ROOT, def.rel));
     const kb = st.size / 1024;
@@ -126,11 +128,12 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 export default async function PropuestaGustavoPage() {
   const pesos = Object.fromEntries(
     await Promise.all(
-      [...DESCARGAS.map((d) => d.slug), "zip/Propuesta-Programa-Piloto-completo.zip"].map(
-        async (slug) => [slug, await pesoDe(slug)] as const,
-      ),
+      DESCARGAS.map(async (d) => [d.slug, await pesoDe(d.slug)] as const),
     ),
   );
+  // Video, audio y ZIP viven en el bucket privado: solo se ofrecen si el
+  // entorno tiene las credenciales de S3 configuradas.
+  const s3Ok = s3Config() !== null;
 
   const mailto = `mailto:${CONTACTO_EMAIL}?subject=${encodeURIComponent(CONTACTO_ASUNTO)}`;
 
@@ -279,7 +282,7 @@ export default async function PropuestaGustavoPage() {
               <div className="mt-4">
                 {MEDIA.video.youtubeId ? (
                   <LiteYouTube id={MEDIA.video.youtubeId} titulo={MEDIA.video.titulo} />
-                ) : MEDIA.video.src ? (
+                ) : MEDIA.video.src && s3Ok ? (
                   <video
                     controls
                     preload="metadata"
@@ -309,7 +312,7 @@ export default async function PropuestaGustavoPage() {
               <div className="mt-4">
                 {MEDIA.audio.youtubeId ? (
                   <LiteYouTube id={MEDIA.audio.youtubeId} titulo={MEDIA.audio.titulo} />
-                ) : MEDIA.audio.src ? (
+                ) : MEDIA.audio.src && s3Ok ? (
                   // eslint-disable-next-line jsx-a11y/media-has-caption
                   <audio controls preload="none" className="w-full">
                     <source src={archivoUrl(`media/${MEDIA.audio.src}`)} type="audio/mp4" />
@@ -422,21 +425,20 @@ export default async function PropuestaGustavoPage() {
             )}
           </div>
 
-          <div className="mt-8 rounded-lg border border-gold/40 bg-gold/10 p-6 text-center">
-            <p className="text-sm text-cream-dim">
-              Los seis documentos en un solo archivo
-              {pesos["zip/Propuesta-Programa-Piloto-completo.zip"]
-                ? ` · ZIP · ${pesos["zip/Propuesta-Programa-Piloto-completo.zip"]}`
-                : ""}
-            </p>
-            <a
-              href={archivoUrl("zip/Propuesta-Programa-Piloto-completo.zip")}
-              download
-              className="mt-4 inline-flex min-h-12 items-center gap-2 bg-gold px-8 py-3.5 text-sm font-bold uppercase tracking-[0.18em] text-navy transition hover:bg-gold-light"
-            >
-              <span aria-hidden="true">↓</span> Descargar todo
-            </a>
-          </div>
+          {s3Ok && (
+            <div className="mt-8 rounded-lg border border-gold/40 bg-gold/10 p-6 text-center">
+              <p className="text-sm text-cream-dim">
+                Los seis documentos en un solo archivo · ZIP · {ZIP_PESO}
+              </p>
+              <a
+                href={archivoUrl("zip/Propuesta-Programa-Piloto-completo.zip")}
+                download
+                className="mt-4 inline-flex min-h-12 items-center gap-2 bg-gold px-8 py-3.5 text-sm font-bold uppercase tracking-[0.18em] text-navy transition hover:bg-gold-light"
+              >
+                <span aria-hidden="true">↓</span> Descargar todo
+              </a>
+            </div>
+          )}
         </div>
       </section>
 

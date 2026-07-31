@@ -12,21 +12,21 @@ export const CONTACTO_ASUNTO =
 export const CV_DISPONIBLE = false;
 
 // ── Video y audio ─────────────────────────────────────────────────────────────
-// Los archivos NO están en el repo (35 MB + 21 MB). Mientras `youtubeId` y
-// `src` estén vacíos, la página muestra la tarjeta en estado
-// "Disponible a pedido" en lugar de un reproductor roto.
-// Modo recomendado: subir el video a YouTube como "no listado" y poner acá el
-// ID (se embebe vía youtube-nocookie.com, sin cookies de terceros hasta el play).
-// Modo alternativo: copiar el archivo a private/propuesta-gustavo/media/ y
-// poner el nombre en `src` (se sirve por la ruta protegida /archivo/media/...).
+// Los archivos pesados (35 MB + 21 MB) NO viven en el repo ni pasan por
+// Amplify (corta respuestas de ~6 MB): viven en el bucket S3 PRIVADO
+// (PROPUESTA_S3_BUCKET) bajo media/, y la ruta protegida redirige a un link
+// firmado tras validar la cookie. `src` es la key dentro de media/ en S3.
+// Si `src` está vacío o el bucket no está configurado, la tarjeta muestra
+// "Disponible a pedido". `youtubeId` (no listado, youtube-nocookie) sigue
+// disponible como alternativa y tiene prioridad si ambos están.
 export const MEDIA = {
   video: {
     titulo: "Video explicativo",
     duracion: "7:31",
     descripcion:
       "Recorre el problema, la propuesta, el circuito y los límites del programa.",
-    youtubeId: "", // ej.: "dQw4w9WgXcQ" (video no listado)
-    src: "", // ej.: "Piloto_de_90_Dias.mp4" dentro de private/propuesta-gustavo/media/
+    youtubeId: "",
+    src: "piloto-90-dias.mp4", // key en s3://<bucket>/media/
     poster: "",
   },
   audio: {
@@ -35,7 +35,7 @@ export const MEDIA = {
     descripcion:
       "Conversación entre dos voces que repasa la propuesta completa.",
     youtubeId: "",
-    src: "", // ej.: "Resumen-propuestas-vecinales.m4a" dentro de private/propuesta-gustavo/media/
+    src: "organizar-propuestas-vecinales.m4a", // key en s3://<bucket>/media/
     poster: "",
   },
 } as const;
@@ -45,10 +45,12 @@ export const MEDIA = {
 // lo que figura acá. Cualquier otro slug devuelve 404. Nunca se concatena la
 // URL contra el filesystem.
 export interface ArchivoDef {
-  /** ruta relativa dentro de private/propuesta-gustavo/ */
-  rel: string;
+  /** ruta relativa dentro de private/propuesta-gustavo/ (archivos chicos) */
+  rel?: string;
+  /** key en el bucket privado (archivos grandes: se redirige a link firmado) */
+  s3Key?: string;
   contentType: string;
-  /** attachment = descarga; inline = se muestra (figuras y miniaturas) */
+  /** attachment = descarga; inline = se muestra (figuras, miniaturas, media) */
   disposition: "attachment" | "inline";
   /** nombre limpio con el que se descarga */
   nombre?: string;
@@ -95,8 +97,9 @@ export const ARCHIVOS: Record<string, ArchivoDef> = {
     disposition: "attachment",
     nombre: "Presentacion-completa.pptx",
   },
+  // El ZIP (7 MB) supera el límite de respuesta de Amplify → S3 firmado.
   "zip/Propuesta-Programa-Piloto-completo.zip": {
-    rel: "zip/Propuesta-Programa-Piloto-completo.zip",
+    s3Key: "zip/Propuesta-Programa-Piloto-completo.zip",
     contentType: "application/zip",
     disposition: "attachment",
     nombre: "Propuesta-Programa-Piloto-completo.zip",
@@ -130,11 +133,11 @@ export const ARCHIVOS: Record<string, ArchivoDef> = {
       },
     ]),
   ),
-  // Video/audio locales (solo si se configuró MEDIA.*.src; ver arriba)
+  // Video/audio en S3 (solo si se configuró MEDIA.*.src; ver arriba)
   ...(MEDIA.video.src
     ? {
         [`media/${MEDIA.video.src}`]: {
-          rel: `media/${MEDIA.video.src}`,
+          s3Key: `media/${MEDIA.video.src}`,
           contentType: "video/mp4",
           disposition: "inline" as const,
         },
@@ -143,7 +146,7 @@ export const ARCHIVOS: Record<string, ArchivoDef> = {
   ...(MEDIA.audio.src
     ? {
         [`media/${MEDIA.audio.src}`]: {
-          rel: `media/${MEDIA.audio.src}`,
+          s3Key: `media/${MEDIA.audio.src}`,
           contentType: "audio/mp4",
           disposition: "inline" as const,
         },
@@ -170,6 +173,10 @@ export const ARCHIVOS: Record<string, ArchivoDef> = {
 export function archivoUrl(slug: string): string {
   return `/propuesta-gustavo/archivo/${slug}`;
 }
+
+/** Peso mostrado del ZIP (vive en S3, no se puede hacer fs.stat).
+ *  Actualizar si se regenera el ZIP (ver private/propuesta-gustavo/README.md). */
+export const ZIP_PESO = "6,8 MB";
 
 // ── Figuras de la sección "Cómo funciona" ────────────────────────────────────
 export interface Figura {

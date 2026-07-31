@@ -3,6 +3,7 @@ import path from "node:path";
 import { Readable } from "node:stream";
 import { NextRequest, NextResponse } from "next/server";
 import { PROPUESTA_COOKIE, verifyPropuestaCookieValue } from "@/lib/propuesta-auth";
+import { presignS3Get, s3Config } from "@/lib/propuesta-s3";
 import { ARCHIVOS, CV_DISPONIBLE } from "../../_lib/config";
 
 // Sirve los archivos de la propuesta DESDE FUERA de /public, para que
@@ -45,7 +46,31 @@ export async function GET(
     });
   }
 
-  const abs = path.join(PRIVATE_ROOT, def.rel);
+  // Archivos grandes (video, audio, ZIP): viven en el bucket privado; acá,
+  // ya validada la cookie, se redirige a un link firmado de 1 hora.
+  if (def.s3Key) {
+    const s3 = s3Config();
+    if (!s3) {
+      return new NextResponse("No disponible", {
+        status: 503,
+        headers: { "Cache-Control": NO_STORE },
+      });
+    }
+    const nombre = def.nombre ?? path.basename(def.s3Key);
+    const url = presignS3Get({
+      ...s3,
+      key: def.s3Key,
+      expires: 3600,
+      responseContentDisposition: `${def.disposition}; filename="${nombre}"`,
+      responseContentType: def.contentType,
+    });
+    const res = NextResponse.redirect(url, 302);
+    res.headers.set("Cache-Control", NO_STORE);
+    res.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+    return res;
+  }
+
+  const abs = path.join(PRIVATE_ROOT, def.rel!);
   let size: number;
   try {
     size = (await fs.stat(abs)).size;
@@ -56,7 +81,7 @@ export async function GET(
     });
   }
 
-  const nombre = def.nombre ?? path.basename(def.rel);
+  const nombre = def.nombre ?? path.basename(def.rel!);
   const headersBase: Record<string, string> = {
     "Content-Type": def.contentType,
     "Content-Disposition": `${def.disposition}; filename="${nombre}"`,
