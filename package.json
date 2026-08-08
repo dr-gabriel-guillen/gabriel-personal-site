@@ -1,9 +1,17 @@
 {
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run verify:data",
     "build": "next build",
+    "postbuild": "node scripts/check-pii.mjs",
     "start": "next start",
-    "preview": "node preview/server.js"
+    "preview": "node preview/server.js",
+    "verify:data": "node scripts/validate-credentials.mjs && node scripts/check-pii.mjs && node scripts/gen-verification-report.mjs",
+    "validate:credentials": "node scripts/validate-credentials.mjs",
+    "check:pii": "node scripts/check-pii.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "report": "node scripts/gen-verification-report.mjs",
+    "hooks:install": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "next": "^15.3.1",

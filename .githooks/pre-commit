@@ -1,0 +1,23 @@
+#!/bin/sh
+# Blocks a commit that would publish a never-publish value, or that leaves
+# data/credentials.json in a state the site cannot render honestly.
+#
+# Enable once per clone:   npm run hooks:install
+# Bypass (do not):         git commit --no-verify
+
+set -e
+
+node scripts/check-pii.mjs --staged
+
+# Only revalidate the inventory when it, or the code that reads it, changed.
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^(data/credentials\.json|lib/credentials\.ts|scripts/validate-credentials\.mjs)$'; then
+  node scripts/validate-credentials.mjs
+
+  node scripts/gen-verification-report.mjs
+  if ! git diff --quiet -- VERIFICATION_REPORT.md; then
+    echo ""
+    echo "✖ VERIFICATION_REPORT.md is stale — it has been regenerated."
+    echo "  Stage it and commit again:  git add VERIFICATION_REPORT.md"
+    exit 1
+  fi
+fi

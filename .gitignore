@@ -4,6 +4,7 @@ out
 dist
 .env*
 *.log
+tsconfig.tsbuildinfo
 
 # la propuesta usa .env.example como plantilla documentada
 !.env.example

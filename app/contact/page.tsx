@@ -66,8 +66,8 @@ export default function ContactPage() {
                   name="subject"
                   className="rounded border border-border bg-navy px-4 py-3 text-sm text-cream focus:border-gold focus:outline-none"
                 >
-                  <option>{t("contact.subj.guinness")}</option>
                   <option>{t("contact.subj.legal")}</option>
+                  <option>{t("contact.subj.credentials")}</option>
                   <option>{t("contact.subj.speaking")}</option>
                   <option>{t("contact.subj.academic")}</option>
                   <option>{t("contact.subj.tech")}</option>

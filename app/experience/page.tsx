@@ -13,7 +13,12 @@ const jobs = [
       "Lead the Cross-border initiative for the search team — capacity planning, project tracking, and system integration via JIRA/Confluence",
       "Lead PayPal/Venmo wallet interoperability with WeChat Pay, Mercado Pago, and partner ecosystems across money-movement, identity, and settlement flows",
       "Own indexing, relevance, query understanding, and latency optimization services on the Search team using Python & REST APIs",
-      "Serve as Legal & Privacy liaison — privacy-by-design, data minimization, DPIA inputs, cross-border data transfer reviews — reducing privacy audit findings by 30%",
+      // Corrected 2026-08-07. This previously read "Serve as Legal & Privacy
+      // liaison — privacy-by-design, data minimization, DPIA inputs..." which
+      // describes legal work in what is a software-engineering role, and
+      // predates the 2025 California Bar admission. Kept as the engineering
+      // contribution it actually is.
+      "Build privacy and data-handling requirements into cross-border payment services as an engineer on the team — data minimization, retention and transfer-review inputs to system design",
       "Lead AI acceleration: LLM-assisted code reviews, automated testing, AI development cycle dashboarding",
     ],
   },

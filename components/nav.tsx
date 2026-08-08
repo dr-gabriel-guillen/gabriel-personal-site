@@ -18,11 +18,19 @@ export function Nav() {
 
   const toggle = () => setLang(lang === "en" ? "es" : "en");
 
+  // /verification and /verificacion are separate server-rendered URLs rather
+  // than one page behind the client language toggle, so the link has to pick
+  // the right one. That split is deliberate: this content must be crawlable
+  // and archivable with JavaScript disabled.
+  const verifyHref = lang === "es" ? "/verificacion" : "/verification";
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-navy/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
         <Link href="/" className="flex flex-col leading-none">
-          <span className="font-display text-lg font-bold text-gold">Dr. Gabriel B. Guillen</span>
+          <span className="font-display text-lg font-bold text-gold">
+            Gabriel Guillen-Gonzalez
+          </span>
           <span className="mt-0.5 text-[10px] font-bold uppercase tracking-[0.3em] text-cream-dim">
             {t("nav.tagline")}
           </span>
@@ -35,6 +43,9 @@ export function Nav() {
               {t(l.key)}
             </Link>
           ))}
+          <Link href={verifyHref} className="text-gold transition hover:text-gold-light">
+            {t("nav.verification")}
+          </Link>
           <button
             onClick={toggle}
             className="flex items-center gap-1.5 rounded border border-gold/40 px-3 py-1.5 text-gold transition hover:bg-gold/10"
@@ -78,6 +89,13 @@ export function Nav() {
               {t(l.key)}
             </Link>
           ))}
+          <Link
+            href={verifyHref}
+            onClick={() => setOpen(false)}
+            className="block py-3 text-sm font-bold uppercase tracking-[0.18em] text-gold"
+          >
+            {t("nav.verification")}
+          </Link>
         </nav>
       )}
     </header>
