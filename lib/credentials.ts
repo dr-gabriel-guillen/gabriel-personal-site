@@ -9,6 +9,7 @@
  * Run `npm run validate:credentials` after editing the JSON.
  */
 import raw from "@/data/credentials.json";
+import documents from "@/data/documents.json";
 
 export type Lang = "en" | "es";
 
@@ -108,6 +109,26 @@ export const REGISTRIES = raw._meta.registries as unknown as Record<string, Regi
 
 export function byId(id: string): Credential | undefined {
   return CREDENTIALS.find((c) => c.id === id);
+}
+
+/**
+ * The published source document for a credential, where one exists.
+ *
+ * Kept in its own manifest (data/documents.json, written by
+ * scripts/import-documents.mjs) rather than inside credentials.json, so the
+ * credential record stays byte-identical to the firm site's copy and the
+ * parity check keeps passing.
+ *
+ * Only 18 of the credentials have a document. The rest are verified purely
+ * through their registry, or have no document on file yet.
+ */
+export function documentFor(c: Credential): { path: string; bytes: number } | null {
+  const doc = (documents as Record<string, { path: string; bytes: number }>)[c.id];
+  return doc ?? null;
+}
+
+export function formatBytes(bytes: number): string {
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
 export function inCategory(category: Category): Credential[] {

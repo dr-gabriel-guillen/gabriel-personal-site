@@ -1,0 +1,74 @@
+{
+  "psico-social": {
+    "path": "/documents/psico-social.pdf",
+    "bytes": 3180095
+  },
+  "eng-unlam": {
+    "path": "/documents/eng-unlam.pdf",
+    "bytes": 6887731
+  },
+  "cpn-unq": {
+    "path": "/documents/cpn-unq.pdf",
+    "bytes": 6370320
+  },
+  "lic-adm-unq": {
+    "path": "/documents/lic-adm-unq.pdf",
+    "bytes": 6334622
+  },
+  "esp-hys-moron": {
+    "path": "/documents/esp-hys-moron.pdf",
+    "bytes": 6428066
+  },
+  "prof-mat-unrn": {
+    "path": "/documents/prof-mat-unrn.pdf",
+    "bytes": 5958621
+  },
+  "master-uneatlantico": {
+    "path": "/documents/master-uneatlantico.pdf",
+    "bytes": 7059920
+  },
+  "traductor-tecnico": {
+    "path": "/documents/traductor-tecnico.pdf",
+    "bytes": 4372258
+  },
+  "abogado-uncaus": {
+    "path": "/documents/abogado-uncaus.pdf",
+    "bytes": 7282879
+  },
+  "esp-petro-unsam": {
+    "path": "/documents/esp-petro-unsam.pdf",
+    "bytes": 470338
+  },
+  "esp-dev-unq": {
+    "path": "/documents/esp-dev-unq.pdf",
+    "bytes": 3962768
+  },
+  "phd-unlam": {
+    "path": "/documents/phd-unlam.pdf",
+    "bytes": 6461063
+  },
+  "martillero-ues21": {
+    "path": "/documents/martillero-ues21.pdf",
+    "bytes": 1866752
+  },
+  "escribano-ues21": {
+    "path": "/documents/escribano-ues21.pdf",
+    "bytes": 1808089
+  },
+  "traductor-publico-ucu": {
+    "path": "/documents/traductor-publico-ucu.pdf",
+    "bytes": 5755863
+  },
+  "alm-harvard": {
+    "path": "/documents/alm-harvard.pdf",
+    "bytes": 9220995
+  },
+  "msfe-lehigh": {
+    "path": "/documents/msfe-lehigh.pdf",
+    "bytes": 4412490
+  },
+  "maestria-unini": {
+    "path": "/documents/maestria-unini.pdf",
+    "bytes": 9555216
+  }
+}

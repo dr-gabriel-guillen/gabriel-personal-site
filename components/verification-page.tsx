@@ -21,6 +21,8 @@ import {
   type Credential,
   type Lang,
   credentialPath,
+  documentFor,
+  formatBytes,
   formatDate,
   inCategory,
   originalTitle,
@@ -53,6 +55,9 @@ const COPY = {
     thesis: "Thesis",
     detail: "Full record",
     verifiableNow: "independently verifiable right now",
+    document: "View the document",
+    documentNote:
+      "Original diploma, academic transcript, apostille and certified translation, as issued.",
     ofTotal: "of",
     honesty:
       "This page reports its own gaps. The tile above is the share of credentials a stranger can check today without asking me for anything.",
@@ -82,6 +87,9 @@ const COPY = {
     thesis: "Tesis",
     detail: "Ficha completa",
     verifiableNow: "verificables de forma independiente ahora mismo",
+    document: "Ver el documento",
+    documentNote:
+      "Diploma original, certificado analítico, apostilla y traducción certificada, tal como fueron emitidos.",
     ofTotal: "de",
     honesty:
       "Esta página informa sus propias brechas. El indicador anterior es la proporción de credenciales que un tercero puede comprobar hoy sin pedirme nada.",
@@ -132,6 +140,7 @@ function CredentialCard({ c, lang }: { c: Credential; lang: Lang }) {
     lang === "es" ? c.no_public_registry_note_es : c.no_public_registry_note_en;
   const pendingNote =
     lang === "es" ? c.verify_pending_note_es : c.verify_pending_note_en;
+  const doc = documentFor(c);
 
   return (
     <article
@@ -235,6 +244,23 @@ function CredentialCard({ c, lang }: { c: Credential; lang: Lang }) {
             )}
           </>
         )}
+
+        {/* The document itself, where one exists. Secondary to the registry
+            link above on purpose: a PDF hosted here is weaker evidence than a
+            government record a stranger can query themselves. */}
+        {doc && (
+          <p className="mt-4">
+            <a
+              href={doc.path}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${t.document}: ${title(c, lang)} (PDF, ${formatBytes(doc.bytes)})`}
+              className="text-sm font-bold text-cream underline underline-offset-4 hover:text-gold"
+            >
+              {t.document} (PDF, {formatBytes(doc.bytes)}) ↓
+            </a>
+          </p>
+        )}
       </div>
     </article>
   );
@@ -263,6 +289,7 @@ function Tile({
 export function VerificationPage({ lang }: { lang: Lang }) {
   const t = COPY[lang];
   const es = lang === "es";
+  const withDocuments = CREDENTIALS.filter((c) => documentFor(c)).length;
 
   const tiles = [
     {
@@ -430,8 +457,13 @@ export function VerificationPage({ lang }: { lang: Lang }) {
         <div className="mx-auto max-w-3xl text-sm leading-8 text-cream-dim">
           <p>
             {es
-              ? "Los documentos originales —diplomas, analíticos, apostillas y traducciones certificadas— no se publican en internet. Se entregan directamente a quien tenga una razón legítima para pedirlos."
-              : "The underlying documents — diplomas, transcripts, apostilles and certified translations — are not published online. They are provided directly to anyone with a legitimate reason to ask."}
+              ? `${withDocuments} de estas credenciales publican el documento completo —diploma original, certificado analítico, apostilla y traducción certificada— tal como fue emitido. El resto se verifica por registro, o el documento se entrega a pedido.`
+              : `${withDocuments} of these credentials publish the full document — original diploma, academic transcript, apostille and certified translation — exactly as issued. The rest are verified through their registry, or the document is provided on request.`}
+          </p>
+          <p className="mt-4">
+            {es
+              ? "Los documentos son la ilustración; los enlaces a los registros son la prueba. Un PDF alojado aquí lo controlo yo — el asiento en el registro nacional, no."
+              : "The documents are the illustration; the registry links are the proof. A PDF hosted here is under my control — the entry in the national registry is not."}
           </p>
           <p className="mt-4">
             {t.lastGenerated}: {formatDate("2026-08-07", lang)}.

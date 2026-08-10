@@ -13,6 +13,8 @@ import {
   type Credential,
   type Lang,
   credentialPath,
+  documentFor,
+  formatBytes,
   formatDate,
   originalTitle,
   registryFor,
@@ -45,8 +47,12 @@ const COPY = {
     registryNo: "Registry reference",
     ects: "Credits",
     thesis: "Thesis",
+    document: "The document",
+    documentCta: "Open the full document",
+    documentNote:
+      "The original diploma, academic transcript, apostille and certified translation, published in full exactly as issued.",
     docsNote:
-      "The diploma, transcript, apostille and certified translation are not published online. They are provided directly on request.",
+      "No document is published for this credential. It is verified through the registry above, or the document is provided directly on request.",
   },
   es: {
     back: "Todas las credenciales",
@@ -72,8 +78,12 @@ const COPY = {
     registryNo: "Referencia de registro",
     ects: "Créditos",
     thesis: "Tesis",
+    document: "El documento",
+    documentCta: "Abrir el documento completo",
+    documentNote:
+      "El diploma original, el certificado analítico, la apostilla y la traducción certificada, publicados íntegros tal como fueron emitidos.",
     docsNote:
-      "El diploma, el analítico, la apostilla y la traducción certificada no se publican en internet. Se entregan directamente a pedido.",
+      "No se publica documento para esta credencial. Se verifica mediante el registro indicado arriba, o el documento se entrega directamente a pedido.",
   },
 } as const;
 
@@ -97,6 +107,7 @@ export function CredentialDetail({ c, lang }: { c: Credential; lang: Lang }) {
   const country = c.country ? COUNTRY_LABELS[c.country] : null;
   const level = c.level ? LEVEL_LABELS[c.level] : null;
   const section = SECTION_LABELS[c.category];
+  const doc = documentFor(c);
   const note = es ? c.public_note_es : c.public_note_en;
   const noRegNote = es ? c.no_public_registry_note_es : c.no_public_registry_note_en;
   const pendingNote = es ? c.verify_pending_note_es : c.verify_pending_note_en;
@@ -236,7 +247,28 @@ export function CredentialDetail({ c, lang }: { c: Credential; lang: Lang }) {
             )}
           </div>
 
-          <p className="mt-8 text-sm leading-7 text-cream-dim">{t.docsNote}</p>
+          {/* The document sits below the verification block deliberately: a
+              PDF served from this domain is weaker evidence than a registry a
+              stranger can query independently. */}
+          {doc ? (
+            <div className="mt-8 rounded-lg border border-border bg-navy-card p-6">
+              <h2 className="font-display text-2xl font-bold text-cream">{t.document}</h2>
+              <p className="mt-3 text-base leading-8 text-cream-dim">
+                {t.documentNote}
+              </p>
+              <a
+                href={doc.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${t.documentCta}: ${title(c, lang)} (PDF, ${formatBytes(doc.bytes)})`}
+                className="mt-5 inline-block border border-gold/60 px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] text-gold transition hover:bg-gold/10"
+              >
+                {t.documentCta} — PDF, {formatBytes(doc.bytes)} ↓
+              </a>
+            </div>
+          ) : (
+            <p className="mt-8 text-sm leading-7 text-cream-dim">{t.docsNote}</p>
+          )}
         </div>
       </section>
     </div>

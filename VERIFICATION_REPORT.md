@@ -8,9 +8,9 @@ Do not edit by hand — run `npm run report` instead.
 ## Headline
 
 - **39** credential claims published.
-- **27** (69%) have a live third-party verification route a stranger can click today.
+- **31** (79%) have a live third-party verification route a stranger can click today.
 - **8** (21%) carry an explicit "no public registry exists" acknowledgement.
-- **4** (10%) are awaiting a verification URL — **these are the gaps to close.**
+- **0** (0%) are awaiting a verification URL — **these are the gaps to close.**
 - **1** hidden behind a feature flag pending confirmation.
 - **2** additional records are published as disclosures rather than claims (coursework completed, no degree conferred). They need no verification route and are excluded from the figures above.
 
@@ -27,17 +27,6 @@ Do not edit by hand — run `npm run report` instead.
 | Professional licences | 4 |
 | Professional certifications | 8 |
 | Coursework completed, no degree conferred (excluded from all counts) | 0 |
-
-## Gaps to close — verification pending
-
-Each of these has an issuer-verified badge that exists but whose public URL has not been published. Paste the URL into `data/credentials.json` and it renders automatically.
-
-| id | Credential | What is needed |
-| --- | --- | --- |
-| `iapp-cippus` | CIPP/US — Certified Information Privacy Professional, United States | paste the credential.net badge URL here. |
-| `iapp-cippe` | CIPP/E — Certified Information Privacy Professional, Europe | paste the credential.net badge URL here. |
-| `iapp-cippc` | CIPP/C — Certified Information Privacy Professional, Canada | paste the credential.net badge URL here. |
-| `iapp-cipm` | CIPM — Certified Information Privacy Manager | paste the credential.net badge URL here. |
 
 ## Full inventory
 
@@ -112,11 +101,11 @@ Each of these has an issuer-verified badge that exists but whose public URL has 
 | id | Credential | Institution | Conferred | Verification |
 | --- | --- | --- | --- | --- |
 | `harvard-cert-ds` | Professional Graduate Certificate in Data Science | Harvard University (Extension School) | 2020-01-15 | no public registry |
-| `iapp-cippus` | CIPP/US — Certified Information Privacy Professional, United States | International Association of Privacy Professionals (IAPP) | 2025-10 | **pending** |
-| `iapp-cippe` | CIPP/E — Certified Information Privacy Professional, Europe | International Association of Privacy Professionals (IAPP) | 2025-11 | **pending** |
-| `iapp-cippc` | CIPP/C — Certified Information Privacy Professional, Canada | International Association of Privacy Professionals (IAPP) | 2025-11 | **pending** |
+| `iapp-cippus` | CIPP/US — Certified Information Privacy Professional, United States | International Association of Privacy Professionals (IAPP) | 2025-10 | [verify](https://www.credential.net/17437477-53f6-4363-8846-7864f14b8c71) |
+| `iapp-cippe` | CIPP/E — Certified Information Privacy Professional, Europe | International Association of Privacy Professionals (IAPP) | 2025-11 | [verify](https://www.credential.net/2cd4b5d1-9ae4-4f35-b144-18c1124f31ac) |
+| `iapp-cippc` | CIPP/C — Certified Information Privacy Professional, Canada | International Association of Privacy Professionals (IAPP) | 2025-11 | [verify](https://www.credential.net/6a40e66d-b356-4920-91c2-85f7e7dd62e7) |
 | `iapp-cipt` | CIPT — Certified Information Privacy Technologist | International Association of Privacy Professionals (IAPP) | 2025-10 | [verify](https://www.credential.net/0d6b8217-638b-4dde-8643-a8f9fd9fb0cd) |
-| `iapp-cipm` | CIPM — Certified Information Privacy Manager | International Association of Privacy Professionals (IAPP) | 2025-11 | **pending** |
+| `iapp-cipm` | CIPM — Certified Information Privacy Manager | International Association of Privacy Professionals (IAPP) | 2025-11 | [verify](https://www.credential.net/8a2ac7c4-cfab-497a-88a8-f5ddec663218) |
 | `iapp-aigp` | AIGP — Artificial Intelligence Governance Professional | International Association of Privacy Professionals (IAPP) | 2025-11-14 | [verify](https://www.credential.net/8e69a8c0-847f-4f2e-840f-e2d5b0864ab9) |
 | `aws-genai-pro` | AWS Certified Generative AI Developer – Professional | Amazon Web Services | 2026-04 | [verify](https://www.credly.com/badges/cf0b5bea-e1f0-4ec5-a35e-4c567c34b62e) |
 | `aws-genai-early` | AWS Certified Generative AI Developer – Professional, Early Adopter | Amazon Web Services | 2026-04 | [verify](https://www.credly.com/badges/ed800fb5-7f4a-46cc-84d3-583483d44ed5) |
@@ -150,10 +139,6 @@ Known and tracked. The validator fails the build on any NEW gap, but tolerates t
 - `lic-inmob-ues21` — TODO(gabriel): obtain the diploma PDF; only the registry record exists so far.
 - `actuario-ues21` — TODO(gabriel): obtain the diploma PDF.
 - `traductor-tecnico` — TODO(gabriel): supply the conferral date from the diploma. Tracked in _meta.accepted_gaps.
-- `iapp-cippus` — TODO(gabriel): paste the credential.net badge URL here.
-- `iapp-cippe` — TODO(gabriel): paste the credential.net badge URL here.
-- `iapp-cippc` — TODO(gabriel): paste the credential.net badge URL here.
-- `iapp-cipm` — TODO(gabriel): paste the credential.net badge URL here.
 
 ## Claims removed for lack of evidence
 
