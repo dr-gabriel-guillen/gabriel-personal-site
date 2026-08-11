@@ -65,6 +65,11 @@ export interface Credential {
   no_public_registry_note_es?: string;
   public_note_en?: string;
   public_note_es?: string;
+  /** Overrides the default "diploma + transcript + apostille" description when
+   *  the published file is something else, e.g. an examination record. */
+  document_note_en?: string;
+  document_note_es?: string;
+  thesis_defended?: string;
   internal_note?: string;
   thesis_en?: string;
   thesis_es?: string;
@@ -312,8 +317,11 @@ export const SECTION_LABELS: Record<Category, { en: string; es: string }> = {
   },
   certification: { en: "Professional certifications", es: "Certificaciones profesionales" },
   coursework_not_conferred: {
-    en: "Coursework completed, no degree conferred",
-    es: "Cursada completa, sin título otorgado",
+    // One of these has only coursework; the other has its thesis defended and
+    // approved with the título not yet issued. The label has to cover both
+    // without overstating either.
+    en: "Programmes completed — degree not yet conferred",
+    es: "Programas completados — título aún no otorgado",
   },
 };
 

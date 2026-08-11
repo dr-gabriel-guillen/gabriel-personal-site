@@ -45,7 +45,7 @@ Do not edit by hand — run `npm run report` instead.
 | `cpcecaba-cp` | Certified Public Accountant, Buenos Aires Professional Council licence | Consejo Profesional de Ciencias Económicas de la Ciudad de Buenos Aires | 2018 | [verify](https://z0723.cponline.org.ar/vpm/consultaMatricula) |
 | `cpcecaba-la` | Licensed Business Administrator, Buenos Aires Professional Council licence | Consejo Profesional de Ciencias Económicas de la Ciudad de Buenos Aires | 2018 | [verify](https://z0723.cponline.org.ar/vpm/consultaMatricula) |
 | `ctpipba` | Sworn Public Translator (English), Buenos Aires Province Translators' Association | Colegio de Traductores Públicos e Intérpretes de la Provincia de Buenos Aires, Regional Morón | 2024 | [verify](https://traductoresmoron.org.ar/matriculado/guillen-gabriel-bernardo/) |
-| `notary-ca` | Notary Public, State of California | California Secretary of State | 2025 | [verify](https://canotary.info/notaries/?comm_num=2530561) |
+| `notary-ca` | Notary Public, State of California | California Secretary of State | 2024 | [verify](https://canotary.info/notaries/?comm_num=2493553) |
 | `copitec` | Professional engineering registration, COPITEC | Consejo Profesional de Ingeniería de Telecomunicaciones, Electrónica y Computación (COPITEC) | — | [verify](https://www.copitec.org.ar/) |
 
 ### Doctorate (1)
@@ -114,7 +114,7 @@ Do not edit by hand — run `npm run report` instead.
 
 | id | Credential | Institution | Conferred | Verification |
 | --- | --- | --- | --- | --- |
-| `maestria-educacion-unq` | Master's in Education | Universidad Nacional de Quilmes (UNQ) | — | **UNROUTED** |
+| `maestria-educacion-unq` | Master's in Education | Universidad Nacional de Quilmes (UNQ) | — | no public registry |
 | `maestria-filosofia-unq` | Master's in Philosophy | Universidad Nacional de Quilmes (UNQ) | — | **UNROUTED** |
 
 ## Behind a feature flag
@@ -129,11 +129,10 @@ Known and tracked. The validator fails the build on any NEW gap, but tolerates t
 
 ## Open TODOs
 
-- `notary-ca` — TODO(gabriel): the commission appears filed under the transposed name 'Gonzalez-Guillen, Brian Gabriel', and two Snapdocs profiles exist with inconsistent signing counts. Consolidate, then this record can carry the official Secretary of State lookup instead of an aggregator.
+- `notary-ca` — Verified 2026-08-08: commission #2493553 resolves to 'Guillen-Gonzalez, Gabriel Brian', expiring 30/06/2028. The audit had pointed at #2530561, which belongs to a different person. TODO(gabriel): confirm the commission start date — only the expiry is published by the lookup.
 - `copitec` — TODO(gabriel): confirm this matrícula is still active. The inscription stamp appears on the UNLaM engineering diploma. Renders only when the COPITEC_CONFIRMED flag is on; excluded from all counts until then.
 - `alm-harvard` — The transcript settles the three-way discrepancy. Site previously said 'Master in Data Science, 2020-22'; LinkedIn said Jan 2019 - Dec 2021 and GPA 3.78. Correct: 2019-2022, GPA 3.77. TODO(gabriel): fix LinkedIn to match.
 - `msfe-lehigh` — TODO(gabriel): the audit listed https://www.lehigh.edu/cediploma/validator/ as a live verification URL. It returns 404 as of 2026-08-07, so it was not published. If Lehigh's CeDiploma validator has moved, put the working URL here and the honest no-registry badge is replaced automatically by a live link.
-- `esp-eval-uba` — Conferred per the state registry on 20/02/2026. TODO(gabriel): obtain the diploma; the folder holds only a 2022 enrolment certificate.
 - `abogado-uncaus` — TODO(gabriel): LinkedIn labels this 'Doctor of Law - JD'. Correct it there too.
 - `lic-adm-unq` — TODO(gabriel): LinkedIn labels this an 'MBA'. The registry and the diploma both say Licenciado en Administración.
 - `lic-inmob-ues21` — TODO(gabriel): obtain the diploma PDF; only the registry record exists so far.
@@ -173,3 +172,9 @@ Each of these was live on a public page and could not be substantiated. Supplyin
 - **Where it appeared:** drgabrielguillen.com home page badge, hero and a full section
 - **Finding:** Guinness World Records does not publish its applicant pipeline, so the claim is unverifiable in either direction.
 - **Action:** Moved off the primary professional pages to /about/personal-projects, reframed as a personal project.
+
+### Notary Public, State of California — commission #2530561
+
+- **Where it appeared:** drgabrielguillen.com/verification and guillengonzalezlaw.com/verification
+- **Finding:** Commission #2530561 is registered to 'Gonzalez-Guillen, Brian Gabriel', a different person. The credential audit saw the transposed name and assumed it was a filing error against Gabriel Guillen-Gonzalez; it is not. The verification link therefore resolved to someone else's record, which is worse than publishing no claim at all.
+- **Action:** Removed 2026-08-08 and REPLACED the same day with Gabriel's own commission, #2493553, which the public lookup resolves to 'Guillen-Gonzalez, Gabriel Brian'.

@@ -70,5 +70,21 @@
   "maestria-unini": {
     "path": "/documents/maestria-unini.pdf",
     "bytes": 9555216
+  },
+  "esp-eval-uba": {
+    "path": "/documents/esp-eval-uba.pdf",
+    "bytes": 465760
+  },
+  "lic-inmob-ues21": {
+    "path": "/documents/lic-inmob-ues21.pdf",
+    "bytes": 3082694
+  },
+  "actuario-ues21": {
+    "path": "/documents/actuario-ues21.pdf",
+    "bytes": 3792710
+  },
+  "maestria-educacion-unq": {
+    "path": "/documents/maestria-educacion-unq.pdf",
+    "bytes": 209728
   }
 }

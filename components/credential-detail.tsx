@@ -254,7 +254,7 @@ export function CredentialDetail({ c, lang }: { c: Credential; lang: Lang }) {
             <div className="mt-8 rounded-lg border border-border bg-navy-card p-6">
               <h2 className="font-display text-2xl font-bold text-cream">{t.document}</h2>
               <p className="mt-3 text-base leading-8 text-cream-dim">
-                {t.documentNote}
+                {(es ? c.document_note_es : c.document_note_en) ?? t.documentNote}
               </p>
               <a
                 href={doc.path}

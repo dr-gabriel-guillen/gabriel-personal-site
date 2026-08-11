@@ -54,10 +54,25 @@ const DOCS = {
   "maestria-unini": "Titulo Unini/MBA_full.pdf",
 };
 
+/**
+ * Documents supplied later, from outside the Drive folder. Same treatment:
+ * copied verbatim, renamed to the credential id.
+ *
+ * `maestria-educacion-unq` is the acta de defensa, not a diploma — the thesis
+ * was defended and approved on 27 March 2026 but the título has not been
+ * issued, so this credential is still counted nowhere.
+ */
+const EXTRA_DOCS = {
+  "esp-eval-uba": "C:/Users/inggu/Documents/Uba Titulo.pdf",
+  "lic-inmob-ues21": "C:/Users/inggu/Documents/Lic. Des. Inmobiliario Completo.pdf",
+  "actuario-ues21": "C:/Users/inggu/Documents/Actuario Completo.pdf",
+  "maestria-educacion-unq": "C:/Users/inggu/Downloads/Acta-guillen.pdf",
+};
+
 const inventory = JSON.parse(readFileSync(resolve("data/credentials.json"), "utf8"));
 const known = new Set(inventory.credentials.map((c) => c.id));
 
-const unknown = Object.keys(DOCS).filter((id) => !known.has(id));
+const unknown = [...Object.keys(DOCS), ...Object.keys(EXTRA_DOCS)].filter((id) => !known.has(id));
 if (unknown.length) {
   console.error(`✖ unknown credential ids in DOCS: ${unknown.join(", ")}`);
   process.exit(1);
@@ -69,10 +84,14 @@ const results = [];
 let missing = 0;
 let bytes = 0;
 
-for (const [id, rel] of Object.entries(DOCS)) {
-  const src = join(SOURCE_ROOT, rel);
+const ALL = [
+  ...Object.entries(DOCS).map(([id, rel]) => [id, join(SOURCE_ROOT, rel)]),
+  ...Object.entries(EXTRA_DOCS),
+];
+
+for (const [id, src] of ALL) {
   if (!existsSync(src)) {
-    console.error(`  ✗ MISSING  ${id}  <-  ${rel}`);
+    console.error(`  ✗ MISSING  ${id}  <-  ${src}`);
     missing++;
     continue;
   }
@@ -100,7 +119,7 @@ if (!dry) {
 }
 
 const withoutDocs = [...known].filter(
-  (id) => !DOCS[id] && !["maestria-educacion-unq", "maestria-filosofia-unq"].includes(id),
+  (id) => !DOCS[id] && !EXTRA_DOCS[id] && id !== "maestria-filosofia-unq",
 );
 
 console.log(
